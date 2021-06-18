@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/register.css">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h2>Registration Form</h2>
+    <form action="/api/register" method="post">
+        <div class="imgcontainer">
+          <img src="../img/icon copy.jpg" alt="Avatar" class="avatar">
+        </div>
+      
+        <div class="container">
+
+          <label for="firstname"><b>Firstname</b></label>
+          <input type="text" id="firstname" placeholder="Enter Firstname" name="firstname" required>
+
+          <label for="lastname"><b>Lastname</b></label>
+          <input type="text" id="lastname" placeholder="Enter Lastname" name="lastname" required>
+
+          <label for="username"><b>Username</b></label>
+          <input type="text" id="username" placeholder="Enter Username" name="username" required>
+
+          <label for="role"><b>role</b></label>
+          <input type="text" id="role" placeholder="Enter role" name="role" required>
+
+
+          <label for="email"><b>Email</b></label>
+          <input type="text" id="email" placeholder="Enter Email" name="email" required>
+
+
+          <label for="password"><b>Password</b></label>
+          <input type="text" id="password" placeholder="Create Password" name="password" required>
+
+          <label for="confirmpassword"><b>Confirm Password</b></label>
+          <input type="text" id="confirm" placeholder="Confirm Password" name="confirmpassword" required>
+              
+          <button type="submit" id="registerbutton">Register</button>
+          
+        </div>
+      
+        <div class="container" style="background-color:#f1f1f1">
+          <a href="/"><button type="button" class="cancelbtn">Cancel</button></a>
+        </div>
+      </form>
+      <script src="/javascripts/site.js"></script>
+</body>
+
+
+</html>

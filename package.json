@@ -1,0 +1,33 @@
+{
+  "name": "quizee-mini",
+  "version": "1.0.0",
+  "description": "A Qiuz App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "crypto": "^1.0.1",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "express": "~4.16.1",
+    "google-auth-library": "^7.1.2",
+    "mongoose": "^5.12.14",
+    "morgan": "~1.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iam-v0id/quizee-mini.git"
+  },
+  "keywords": [
+    "MEAN"
+  ],
+  "author": "Suhaas, Srinivas, Praneeth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iam-v0id/quizee-mini/issues"
+  },
+  "homepage": "https://github.com/iam-v0id/quizee-mini#readme"
+}

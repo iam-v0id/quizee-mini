@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="/">Register
+              <a class="nav-link active" href="./html/register.html">Register
                 <span class="visually-hidden">(current)</span>
               </a>
           </ul>
@@ -42,9 +42,9 @@
   <main>
 
     <div class="flex-container">
-      <div><img class="img-fluid center" src="./images/home.svg" alt=""></div>
+      <div><img class="img-fluid img" src="./images/home.svg" alt=""></div>
       <div class="login">
-        <form>
+        <form action="/api/user/login" method="POST">
           <input class="form-control me-sm-2" type="text" placeholder="email">
           <br>
           <input class="form-control me-sm-2" type="text" placeholder="password">

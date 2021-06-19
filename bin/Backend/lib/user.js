@@ -1,13 +1,19 @@
 const User = require( "../models/user" );
-
+const {body, validationResult} = require( 'express-validator' );
 module.exports.register = function ( req, res )
 {
-    console.log( req.body );
+    const errors = validationResult( req );
+    if ( !errors.isEmpty() )
+    {
+        return res.json( {success: false, error: errors.errors[0].msg} );
+    }
     var user = new User( req.body );
     user.save( ( err, user ) =>
     {
-        if ( err ) return res.json( {success: false, error: err} );
-        res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+        if ( err )
+            return res.json( {success: false, error: "Email already Registered"} );
+        else
+            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
     } );
 }
 
@@ -32,14 +38,16 @@ module.exports.login = function ( req, res )
                     var user = new User( userobj );
                     user.save( ( err, user ) =>
                     {
-                        if ( err ) return res.json( {success: false, message: "Unable to add user to DB", error: err} );
-                        res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                        if ( err )
+                            return res.json( {success: false, message: "Unable to add user to DB", error: err} );
+                        else
+                            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
                     } );
                 }
             } );
 
             req.session.user = {email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname};
-            res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname} );
+            return res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname} );
         }
         verify().catch( console.error );
     }
@@ -48,19 +56,19 @@ module.exports.login = function ( req, res )
         User.findOne( {email: req.body.email}, ( err, user ) =>
         {
             if ( err )
-                res.json( {success: false, error: err} );
+                return res.json( {success: false, error: err} );
             if ( user )
             {
                 if ( user.authenticate( req.body.password ) )
                 {
                     req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
-                    res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                    return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
                 }
                 else
-                    res.json( {success: false, message: "Incorrect Password"} );
+                    return res.json( {success: false, message: "Incorrect Password"} );
             }
             else
-                res.json( {success: false, message: "User Not Registered"} );
+                return res.json( {success: false, message: "User Not Registered"} );
         } );
     }
 }
@@ -69,5 +77,5 @@ module.exports.logout = function ( req, res )
 {
     req.session.destroy();
     res.clearCookie( 'connect.sid' );
-    res.redirect( '/' );
+    return res.redirect( '/' );
 }

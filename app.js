@@ -30,5 +30,12 @@ app.use( session( {
 
 app.use( '/', indexRouter );
 app.use( '/api', usersRouter );
+app.get( '/dashboard', function ( req, res )
+{
+    if ( req.session && req.session.user )
+        return res.sendFile( __dirname + "/public/html/dashboard.html" );
+    else
+        return res.redirect( '/' );
+} );
 
 module.exports = app;

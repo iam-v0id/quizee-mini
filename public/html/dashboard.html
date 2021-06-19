@@ -1,50 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
+    integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <title>Dashboard</title>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-          <div class="container-fluid">
-            <label class="navbar-brand" href="#">Quizee</label>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-              aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <div class="collapse navbar-collapse">
-              <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                  <a class="nav-link active" href="" id="Author">Author
-                    <span class="visually-hidden">(current)</span>
-                  </a>
-                  <li class="nav-item"  id="Participate">
-                    <a class="nav-link active" href="">Participate
-                      <span class="visually-hidden">(current)</span>
-                    </a>
-              </ul>
-            </div>
-            <div class="d-flex">
-                <ul class="navbar-nav me-auto">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="Logoutbtn">Logout</button>
-            </div>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+      <div class="container-fluid">
+        <label class="navbar-brand" href="#">Quizee</label>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="" id="Author">Author
+                <span class="visually-hidden">(current)</span>
+              </a>
+            <li class="nav-item" id="Participate">
+              <a class="nav-link active" href="">Participate
+                <span class="visually-hidden">(current)</span>
+              </a>
+          </ul>
+        </div>
+        <div class="d-flex">
+          <ul class="navbar-nav me-auto">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="Logoutbtn">Logout</button>
+        </div>
 
-          </div>
-        </nav>
-        
-      </header> 
-      <main>
-      <div id="AuthorPage">HELLO AUTHOR</div>
-      <div id="ParticipatePage">HELLO PARTCIPANT</div>  
-      </main>
-      <footer></footer>
-      <script src="../javascripts/site.js"></script>
+
+
+      </div>
+    </nav>
+
+  </header>
+  <main>
+    <div id="AuthorPage">HELLO AUTHOR</div>
+    <div id="ParticipatePage">HELLO PARTCIPANT</div>
+  </main>
+  <footer></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"
+    integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
+    integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../javascripts/site.js"></script>
 </body>
+
 </html>

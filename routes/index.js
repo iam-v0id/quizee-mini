@@ -8,5 +8,12 @@ router.get( '/home', function ( req, res )
   res.sendFile( filepath );
 } );
 
+router.get( '/dashboard', function ( req, res )
+{
+  if ( req.session && req.session.user )
+    res.sendFile( __dirname + "/public/html/dashboard.html" );
+  else
+    res.redirect( '/' );
+} );
 
 module.exports = router;

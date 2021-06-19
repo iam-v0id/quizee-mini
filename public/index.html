@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
     integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="./stylesheets/style.css">
 </head>
 
@@ -44,12 +44,12 @@
     <div class="flex-container">
       <div><img class="img-fluid img" src="./images/home.svg" alt=""></div>
       <div class="login">
-        <form action="/api/user/login" method="POST">
-          <input class="form-control me-sm-2" type="text" placeholder="email">
+        <form id="loginForm">
+          <input class="form-control me-sm-2" type="text" name="email" placeholder="email">
           <br>
-          <input class="form-control me-sm-2" type="text" placeholder="password">
+          <input class="form-control me-sm-2" type="password" name="password" placeholder="password">
           <br>
-          <button class="btn btn-primary btn-lg" type="submit">Login</button>
+          <button id="login" class="btn btn-primary btn-lg" type="submit">Login</button>
         </form>
         <br>
 

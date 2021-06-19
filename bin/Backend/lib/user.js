@@ -2,15 +2,16 @@ const User = require( "../models/user" );
 
 module.exports.register = function ( req, res )
 {
+    console.log( req.body );
     var user = new User( req.body );
     user.save( ( err, user ) =>
     {
-        if ( err ) return res.json( {sucess: false, message: "Unable to add user to DB", error: err} );
-        res.json( {sucess: true, email: user.email} );
+        if ( err ) return res.json( {success: false, error: err} );
+        res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
     } );
 }
 
-module.exports.login = function ( req, res )
+module.exports.login = function ( req, res )    
 {
     if ( req.body.credential )
     {
@@ -31,14 +32,14 @@ module.exports.login = function ( req, res )
                     var user = new User( userobj );
                     user.save( ( err, user ) =>
                     {
-                        if ( err ) return res.json( {sucess: false, message: "Unable to add user to DB", error: err} );
-                        res.json( {sucess: true, email: user.email} );
+                        if ( err ) return res.json( {success: false, message: "Unable to add user to DB", error: err} );
+                        res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
                     } );
                 }
             } );
 
-            req.session.user = {email: userobj.email};
-            res.json( {success: true, email: userobj.email} );
+            req.session.user = {email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname};
+            res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname} );
         }
         verify().catch( console.error );
     }
@@ -52,14 +53,21 @@ module.exports.login = function ( req, res )
             {
                 if ( user.authenticate( req.body.password ) )
                 {
-                    //req.session.user( {email: user.email} );
-                    res.json( {success: true, email: user.email} );
+                    req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
+                    res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
                 }
                 else
                     res.json( {success: false, message: "Incorrect Password"} );
             }
             else
-                res.json( {success: false, message: "User Not Found in DB"} );
+                res.json( {success: false, message: "User Not Registered"} );
         } );
     }
+}
+
+module.exports.logout = function ( req, res )
+{
+    req.session.destroy();
+    res.clearCookie( 'connect.sid' );
+    res.redirect( '/' );
 }

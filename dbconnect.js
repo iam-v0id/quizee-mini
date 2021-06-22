@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' );
 var connection_string = process.env.MONGO_CONNECTION_STRING;
 module.exports.connect = function ()
 {
-    console.log( "Trying to connect to MongoDB " );
+    console.log( "Trying to connect to MongoDB " + connection_string );
     var dbOptions = {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, auto_reconnect: true};
     mongoose.connect( connection_string, dbOptions );
 

@@ -1,6 +1,5 @@
 $( document ).ready( function ()
 {
-    console.log( "Jquery Running" );
 
     $( '#password, #confirm_password' ).on( 'keyup', function ()
     {
@@ -69,24 +68,22 @@ $( document ).ready( function ()
                 if ( data.success )
                     toastr.success( "Sucessfully Registered" );
                 else
-                    toastr.error( "User Already Registered" );
+                    toastr.error( data.error );
             },
-            error: function ( dataobj )
+            error: function ( data )
             {
-                console.log( dataobj );
+                toastr.error( data.error );
             }
         } );
     } );
 
     $( "#loginForm" ).submit( function ( e )
     {
-
         e.preventDefault(); // avoid to execute the actual submit of the form.
-
         $.ajax( {
             type: "POST",
             url: "/api/user/login",
-            data: $( this ).serialize(), // serializes the form's elements.
+            data: $( this ).serialize(),
             success: function ( data )
             {
                 if ( data.success )
@@ -105,9 +102,10 @@ $( document ).ready( function ()
         userObject.removeCurrentUser();
         $.ajax( {
             type: "POST",
-            url: "/api/users/logout",
+            url: "/api/user/logout",
             data: {},
         } );
+        location.href = "/";
     } );
 } );
 

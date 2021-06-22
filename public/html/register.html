@@ -12,17 +12,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
     integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="../stylesheets/style.css">
 </head>
 
 <body>
   <div class="flex-container">
-    <div style="flex-grow: 1"><img src="../images/welcome.svg" class="img width50" alt=""></div>
-    <div style="flex-grow: 8" class="register">
+    <img src="../images/password.svg" class="width50" alt="">
+    <div class="register">
       <form id="registerForm">
         <label for="">First Name</label>
 
@@ -44,11 +44,20 @@
 
         <input id="confirm_password" class="form-control me-sm-2" type="password" placeholder="confirm password">
         <span id='message'></span>
-
+        <br>
         <br>
 
         <button id="register" class="btn btn-primary btn-lg" disabled="true" type="submit">Register</button>
       </form>
+      <br>
+      <strong>Password must contain the following</strong>
+      <ul>
+        <li>Minimum 8 characters</li>
+        <li>At least one uppercase character</li>
+        <li>At least one lowercase character</li>
+        <li>At least one digit</li>
+        <li>At least one special character</li>
+      </ul>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -60,7 +69,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
     integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/javascripts/site.js"></script>
+  <script src="../javascripts/site.js"></script>
 </body>
 
 </html>

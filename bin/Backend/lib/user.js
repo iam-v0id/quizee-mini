@@ -13,7 +13,7 @@ module.exports.register = function ( req, res )
         if ( err )
             return res.json( {success: false, error: "Email already Registered"} );
         else
-            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
     } );
 }
 
@@ -41,13 +41,13 @@ module.exports.login = function ( req, res )
                         if ( err )
                             return res.json( {success: false, message: "Unable to add user to DB", error: err} );
                         else
-                            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
                     } );
                 }
             } );
 
             req.session.user = {email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname};
-            return res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname} );
+            return res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname, _id: userobj._id} );
         }
         verify().catch( console.error );
     }
@@ -62,7 +62,7 @@ module.exports.login = function ( req, res )
                 if ( user.authenticate( req.body.password ) )
                 {
                     req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
-                    return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                    return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
                 }
                 else
                     return res.json( {success: false, message: "Incorrect Password"} );

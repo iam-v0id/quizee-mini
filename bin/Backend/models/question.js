@@ -5,15 +5,10 @@ const questionSchema = new mongoose.Schema( {
 		required: true,
 	},
 	options: [
-		{
-			text: {
-				type: String,
-				required: true,
-			},
-		},
+		String
 	],
 	correctAnswer: {
-		type: String,
+		type: Number,
 		required: true,
 	},
 } );

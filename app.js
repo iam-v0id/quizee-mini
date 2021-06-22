@@ -12,6 +12,8 @@ var db = require( './dbconnect' );
 
 var indexRouter = require( './routes/index' );
 var usersRouter = require( './routes/users' );
+var quizRouter = require( './routes/quiz.js' );
+var dashboardRouter = require( './routes/dashboard' );
 
 var app = express();
 db.connect();
@@ -30,12 +32,13 @@ app.use( session( {
 
 app.use( '/', indexRouter );
 app.use( '/api', usersRouter );
-app.get( '/dashboard', function ( req, res )
+app.use( '/api', quizRouter );
+app.use( '/dashboard', function ( req, res, next )
 {
     if ( req.session && req.session.user )
-        return res.sendFile( __dirname + "/public/html/dashboard.html" );
+        next();
     else
         return res.redirect( '/' );
-} );
+}, dashboardRouter );
 
 module.exports = app;

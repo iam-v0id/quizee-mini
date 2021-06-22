@@ -29,53 +29,31 @@
         </button>
 
         <div class="collapse navbar-collapse">
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                role="tab" aria-controls="home" aria-selected="true">Home</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-            </li>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" id="Author">Author
+                <span class="visually-hidden">(current)</span>
+              </a>
+            <li class="nav-item" id="Participate" style="cursor: all-scroll;">
+              <a class="nav-link active">Participate
+                <span class="visually-hidden">(current)</span>
+              </a>
           </ul>
-
         </div>
         <div class="d-flex">
           <ul class="navbar-nav me-auto">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="Logoutbtn">Logout</button>
         </div>
-
-
-
       </div>
     </nav>
 
   </header>
   <main>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">...niub
-        <br><br><br><br><br><br> home
-      </div>
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><br><br><br><br><br><br>
-        profile</div>
-      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-    </div>
+    <br><br><br>
+    <div id="AuthorPage"></div>
+    <div id="ParticipatePage"></div>
   </main>
   <footer></footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js"
-    integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
-    integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="../javascripts/site.js"></script>
 </body>
 

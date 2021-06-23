@@ -1,6 +1,5 @@
 const mongoose = require( "mongoose" );
 const User = require( "./user" );
-const Question = require( "./question" );
 
 
 const QuizSchema = new mongoose.Schema( {
@@ -10,7 +9,19 @@ const QuizSchema = new mongoose.Schema( {
         type: Number,
     },
     questions: [
-        {type: mongoose.Schema.Types.ObjectId, ref: "Question"},
+        {
+            description: {
+                type: String,
+                required: true,
+            },
+            options: [
+                String
+            ],
+            correctAnswer: {
+                type: Number,
+                required: true,
+            }
+        },
     ],
     usersParticipated: [
         {

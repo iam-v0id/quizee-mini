@@ -1,29 +1,9 @@
 const Quiz = require( '../models/quiz' );
 const User = require( "../models/user" );
-const Question = require( "../models/question" );
 
-
-module.exports.createQuiz = async function ( req, res )
+module.exports.createQuiz = function ( req, res )
 {
     req.body.questions = eval( req.body.questions );
-    questionIds = [];
-    req.body.questions.forEach( function ( question )
-    {
-
-        var ques = new Question( question );
-        ques.save( ( err, qs ) =>
-        {
-            console.log( qs );
-            if ( err )
-                return res.json( {success: false, error: "Unable to add qustion to the database"} );
-            else
-                questionIds.push( qs._id );
-        } );
-    } );
-
-    req.body.questions = questionIds;
-    console.log( req.body.questions )
-
     var quiz = new Quiz( req.body );
     quiz.save( ( err, quizobj ) =>
     {
@@ -33,6 +13,21 @@ module.exports.createQuiz = async function ( req, res )
         {
             User.updateOne( {_id: req.body.author}, {$push: {quizzesAuthored: {quizId: quizobj._id}}} );
             return res.json( {success: true, quizCode: quizobj.quizCode} );
+        }
+    } );
+}
+
+module.exports.getQuiz = function ( req, res )
+{
+    var quizCode = req.params.quizCode;
+    Quiz.findById( quizCode, ( err, quiz ) =>
+    {
+        if ( err )
+            return res.json( {success: false, error: "Unable to fetch quiz from the database"} );
+        else
+        {
+            // TODO: Send only necessary fields to Front End.
+            return res.json( {success: true, quiz: quiz} );
         }
     } );
 }

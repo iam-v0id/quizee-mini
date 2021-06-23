@@ -121,7 +121,8 @@ function onSignIn( googleobj )
             {
                 toastr.success( 'Login Sucessful' );
                 window.localStorage.setItem( 'currentUser', JSON.stringify( obj ) );
-                location.href = "/dashboard";
+                //location.href = "/dashboard";
+                console.log( obj );
             }
         },
         error: ( err ) =>   

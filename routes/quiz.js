@@ -5,5 +5,6 @@ const {body, validationResult, check} = require( 'express-validator' );
 
 
 router.post( '/quiz/create', quizLib.createQuiz );
+router.get( '/quiz/:quizCode', quizLib.getQuiz );
 
 module.exports = router;

@@ -13,7 +13,7 @@ module.exports.register = function ( req, res )
         if ( err )
             return res.json( {success: false, error: "Email already Registered"} );
         else
-            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
     } );
 }
 
@@ -31,9 +31,11 @@ module.exports.login = function ( req, res )
             } );
             const payload = ticket.getPayload();
             userobj = {firstname: payload['given_name'], lastname: payload['family_name'], email: payload['email']}
-            User.findOne( {email: userobj.email}, ( err, collection ) =>
+            User.findOne( {email: userobj.email}, ( err, userObject ) =>
             {
-                if ( !collection )
+                if ( err )
+                    return res.json( {success: false, message: "Unable to add user to DB", error: err} );
+                if ( !userObject )
                 {
                     var user = new User( userobj );
                     user.save( ( err, user ) =>
@@ -41,13 +43,18 @@ module.exports.login = function ( req, res )
                         if ( err )
                             return res.json( {success: false, message: "Unable to add user to DB", error: err} );
                         else
-                            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                        {
+                            req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
+                            return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
+                        }
                     } );
                 }
+                else
+                {
+                    req.session.user = {email: userObject.email, firstname: userObject.firstname, lastname: userObject.lastname};
+                    return res.json( {success: true, email: userObject.email, firstname: userObject.firstname, lastname: userObject.lastname, _id: userObject._id} );
+                }
             } );
-
-            req.session.user = {email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname};
-            return res.json( {success: true, email: userobj.email, firstname: userobj.firstname, lastname: userobj.lastname} );
         }
         verify().catch( console.error );
     }
@@ -62,7 +69,7 @@ module.exports.login = function ( req, res )
                 if ( user.authenticate( req.body.password ) )
                 {
                     req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
-                    return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname} );
+                    return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
                 }
                 else
                     return res.json( {success: false, message: "Incorrect Password"} );

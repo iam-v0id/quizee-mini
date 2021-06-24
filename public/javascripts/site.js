@@ -150,4 +150,15 @@ $( '#addquestion' ).click( function (){
     cnt++;
     document.getElementById('forminner').innerHTML  +='<div class="form-group" id="'+cnt+'question"> <label for="question1" class="form-label mt-4">Question '+cnt+'</label><input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" id="'+cnt+'opt1"><label for="quizname" class="form-label mt-4">Options</label> <input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option1"> </div><div class="form-group" id="'+cnt+'opt2" >&nbsp;<input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option2"></div><div class="form-group"id="'+cnt+'opt3">&nbsp;<input type="email" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option3"></div><div class="form-group" id="'+cnt+'opt4">&nbsp; <input type="email" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option4"></div><div class="form-group" id="'+cnt+'crctoption" ><label for="crctoption" class="form-label mt-4">Select the Correct Option</label><select class="form-select" id="crctoption"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><hr>';
  } );
- 
+ $( '#deletequestion' ).click( function (){
+               
+    //cnt++;
+   //document.getElementById('forminner').innerHTML  +='<div class="form-group" id="'+cnt+'question"> <label for="question1" class="form-label mt-4">Question '+cnt+'</label><input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" id="'+cnt+'opt1"><label for="quizname" class="form-label mt-4">Options</label> <input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option1"> </div><div class="form-group" id="'+cnt+'opt2" >&nbsp;<input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option2"></div><div class="form-group"id="'+cnt+'opt3">&nbsp;<input type="email" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option3"></div><div class="form-group" id="'+cnt+'opt4">&nbsp; <input type="email" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Option4"></div><div class="form-group" id="'+cnt+'crctoption" ><label for="crctoption" class="form-label mt-4">Select the Correct Option</label><select class="form-select" id="crctoption"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><hr>';
+   var ele=document.getElementById(cnt+'question');
+   console.log(ele);
+   console.log(cnt+'question');
+   del_id=cnt+'question';
+   //$(this).remove();
+
+   cnt--;
+} );

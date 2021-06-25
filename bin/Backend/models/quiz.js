@@ -31,7 +31,8 @@ const QuizSchema = new mongoose.Schema( {
             timeEnded: {type: Number},
             timeStarted: {type: Number}
         },
-    ]
+    ],
+    isDeleted: {type: Boolean, default: false}
 }, {timestamps: true} );
 QuizSchema
     .virtual( "quizCode" )

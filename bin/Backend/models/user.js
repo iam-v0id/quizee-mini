@@ -10,12 +10,12 @@ var userSchema = new mongoose.Schema( {
     salt: String,
     quizzesAuthored: [
         {
-            quizId: {type: mongoose.Schema.Types.ObjectId, ref: "Quiz"},
+            quizCode: {type: mongoose.Schema.Types.ObjectId, ref: "Quiz"},
         },
     ],
     quizzesParticipated: [
         {
-            quizId: {type: mongoose.Schema.Types.ObjectId, ref: "Quiz"},
+            quizCode: {type: mongoose.Schema.Types.ObjectId, ref: "Quiz"},
         },
     ],
 }, {timestamps: true} );

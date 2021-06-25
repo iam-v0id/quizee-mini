@@ -1,3 +1,4 @@
+require( 'dotenv' ).config();
 var mongoose = require( 'mongoose' );
 var connection_string = process.env.MONGO_CONNECTION_STRING;
 module.exports.connect = function ()

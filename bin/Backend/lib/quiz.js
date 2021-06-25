@@ -6,6 +6,8 @@ const async = require( "async" );
 module.exports.createQuiz = function ( req, res )
 {
     req.body.questions = eval( req.body.questions );
+    //req.body.questions[0].options = eval( req.body.questions[0].options );
+    //console.log(req.body.questions[0].options);
     var quiz = new Quiz( req.body );
     quiz.save( ( err, quizobj ) =>
     {
@@ -22,7 +24,11 @@ module.exports.createQuiz = function ( req, res )
 module.exports.getQuiz = function ( req, res )
 {
     var quizCode = req.params.quizCode;
+<<<<<<< HEAD
     Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}}, ( err, quiz ) =>
+=======
+    Quiz.findById( quizCode,{quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}}, ( err, quiz ) =>
+>>>>>>> c213021ad2667e6ea9ce7d6a3a59cbbd69237d9d
     {
         if ( err )
             return res.json( {success: false, error: "Unable to fetch quiz from the database"} );

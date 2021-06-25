@@ -45,6 +45,18 @@ $( document ).ready( function ()
             }
             return "";
         },
+        getCurrentUserId: function ()
+        {
+            var curUserString = this.getCurrentUser();
+            if ( curUserString )
+            {
+                var json = JSON.parse( curUserString );
+                if ( json && json._id )
+                    return json._id;
+                return "";
+            }
+            return "";
+        },
         isUserLoggedIn: function ()
         {
             if ( this.getCurrentUser() == null )
@@ -107,6 +119,140 @@ $( document ).ready( function ()
         } );
         location.href = "/";
     } );
+    var createquiz=false
+var cnt=1
+$("#forminner").hide()
+$("#terminals").hide()
+$( '#createquiz' ).click( function ()
+    {
+        createquiz=true
+        if (createquiz==true) {
+            $("#created").hide();
+            //$("#quizform").show();
+            var defhtml=`<div class="form-group" id="qname"><label for="quizname" class="form-label mt-4">Quiz name</label><input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Quiz name"></div><div class="form-group" id="qdur"><label for="quizname" class="form-label mt-4">Quiz duration</label><input type="number" value="5" min="0" step="5" class="form-control" id="quizduration" aria-describedby="emailHelp" placeholder="Enter Quiz duration"></div><div id="1"><div class="form-group" ><label for="question1" class="form-label mt-4">Question 1</label><input id="1question" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label><input  type="text" class="form-control" id="1opt1" aria-describedby="emailHelp" placeholder="Enter Option1"></div>
+            <div class="form-group" >&nbsp;
+            <input type="text" class="form-control" id="1opt2" aria-describedby="emailHelp" placeholder="Enter Option2">
+          </div>
+          <div class="form-group" >&nbsp;
+            <input type="text" class="form-control" id="1opt3" aria-describedby="emailHelp" placeholder="Enter Option3">
+          </div>
+          <div class="form-group" >&nbsp;
+            <input type="text" class="form-control" id="1opt4" aria-describedby="emailHelp" placeholder="Enter Option4">
+          </div>
+          <div class="form-group">
+            <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
+            <select class="form-select" id="1crctoption">
+              <option >1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+        
+          <hr>
+        </div>`;
+            $("#forminner").html('');
+            $("#forminner").html(defhtml);
+            $("#forminner").show();
+            $("#terminals").show();
+            $( '#createquiz' ).hide();
+        }
+    } );
+$( '#addquestion' ).click( function (){
+               
+    cnt++;
+    var z = document.createElement('div'); // is a node
+    z.innerHTML = '<div id='+cnt+'><div class="form-group" > <label for="question1" class="form-label mt-4">Question '+cnt+'</label><input type="text" id="'+cnt+'question" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label> <input type="text" class="form-control" id="'+cnt+'opt1" aria-describedby="emailHelp" placeholder="Enter Option1"> </div><div class="form-group"  >&nbsp;<input type="text" class="form-control" id="'+cnt+'opt2" aria-describedby="emailHelp" placeholder="Enter Option2"></div><div class="form-group">&nbsp;<input type="email" class="form-control" id="'+cnt+'opt3" aria-describedby="emailHelp" placeholder="Enter Option3"></div><div class="form-group" >&nbsp; <input type="email" class="form-control" id="'+cnt+'opt4" aria-describedby="emailHelp" placeholder="Enter Option4"></div><div class="form-group"  ><label for="crctoption" class="form-label mt-4">Select the Correct Option</label><select class="form-select" id="'+cnt+'crctoption"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><hr></div>' ;
+    //document.body.appendChild(z);
+    document.getElementById('forminner').appendChild(z);
+ } );
+ $( '#deletequestion' ).click( function (){
+               
+     $('#'+cnt).remove()
+     cnt--;
+} );
+$( '#clearquiz' ).click( function (){
+               
+    location.href = "/dashboard";
+} );
+$("#submitquestion").click(function(){
+    //var quizobj={quizName:'',author:'',questions:[],quizDuration:''};
+    var quizName=$("#quizname").val();
+    var quizDuration=parseInt($("#quizduration").val());
+    var author=userObject.getCurrentUserId();
+    var questions=[];
+    console.log(cnt);
+    for(var i=1;i<=cnt;i++)
+    {       //var quesobj={description:'',options:[],correctAnswer:0};
+            var description=$('#'+i+"question").val();
+            var correctAnswer=parseInt($('#'+i+"crctoption").val());
+            //console.log(quesobj.correctAnswer);
+            var opt=[];
+            for(var j=1;j<=4;j++){
+                var optval=$("#"+i+"opt"+j).val();
+                opt.push(optval);
+            }
+            var quesobj={description:description,correctAnswer:correctAnswer,options:opt};
+            //quesobj.options=opt;
+            questions.push(quesobj);
+    }
+    quizobj={quizName:quizName,quizDuration:quizDuration,author:author,questions:JSON.stringify(questions)};
+    //quizobj.questions=questions;
+    console.log(quizobj);
+
+    $.ajax( {
+        type: "POST",
+        url: '/api/quiz/create',
+        data: quizobj,
+        success: function ( data )
+        {
+            if ( data.success )
+            {   
+                console.log("inserted");
+                console.log(data.quizCode);
+                // $("#quizform").hide();
+                $("#forminner").hide();
+                $("#terminals").hide();
+                $("#createquiz").show();
+                $("#quizcreatedid").html(data.quizCode);
+                $("#created").show();
+                //userObject.saveUserInLocalStorage( data );
+                // location.href = "/dashboard";
+            }
+            else
+                toastr.error( data.error );
+        },
+    } );
+
+
+});
+
+
+$( '#participatequiz' ).click( function (){
+     //var quizidobj={quizid:''};
+    console.log("pressed");
+     var quizCode=$("#quizid").val();
+    console.log(quizCode);  
+
+     $.ajax( {
+        method: 'GET',
+        url:`/api/quiz/${quizCode}`,
+        //data:quizCode,
+        success:function(data){
+            if ( data.success )
+            { console.log(data.quiz);
+            }
+            else
+            console.log(data.error);
+        }
+    })
+
+            
+} );
+
+
+
+
 } );
 
 function onSignIn( googleobj )
@@ -121,7 +267,7 @@ function onSignIn( googleobj )
             {
                 toastr.success( 'Login Sucessful' );
                 window.localStorage.setItem( 'currentUser', JSON.stringify( obj ) );
-                //location.href = "/dashboard";
+                location.href = "/dashboard";
                 console.log( obj );
             }
         },
@@ -132,3 +278,4 @@ function onSignIn( googleobj )
     } );
 
 }
+

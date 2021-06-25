@@ -161,3 +161,7 @@ $( '#addquestion' ).click( function (){
 
    cnt--;
 } );
+$( '#clearquiz' ).click( function (){
+               
+    location.href = "/dashboard";
+} );

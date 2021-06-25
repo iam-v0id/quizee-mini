@@ -6,8 +6,7 @@ const async = require( "async" );
 module.exports.createQuiz = function ( req, res )
 {
     req.body.questions = eval( req.body.questions );
-    //req.body.questions[0].options = eval( req.body.questions[0].options );
-    //console.log(req.body.questions[0].options);
+
     var quiz = new Quiz( req.body );
     quiz.save( ( err, quizobj ) =>
     {
@@ -15,7 +14,7 @@ module.exports.createQuiz = function ( req, res )
             return res.json( {success: false, error: "Unable to add quiz to the database"} );
         else
         {
-            User.updateOne( {_id: req.body.author}, {$push: {quizzesAuthored: {quizId: quizobj._id}}} );
+            User.updateOne( {_id: req.body.author}, {$push: {quizzesAuthored: {quizCode: quizobj._id}}} );
             return res.json( {success: true, quizCode: quizobj.quizCode} );
         }
     } );
@@ -24,11 +23,8 @@ module.exports.createQuiz = function ( req, res )
 module.exports.getQuiz = function ( req, res )
 {
     var quizCode = req.params.quizCode;
-<<<<<<< HEAD
+
     Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}}, ( err, quiz ) =>
-=======
-    Quiz.findById( quizCode,{quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}}, ( err, quiz ) =>
->>>>>>> c213021ad2667e6ea9ce7d6a3a59cbbd69237d9d
     {
         if ( err )
             return res.json( {success: false, error: "Unable to fetch quiz from the database"} );
@@ -42,6 +38,7 @@ module.exports.getQuiz = function ( req, res )
 module.exports.submitQuiz = function ( req, res )
 {
     req.body.responses = eval( req.body.responses );
+
     console.log( req.body );
     var marks = 0;
     Quiz.findById( req.body.quizCode, {questions: {correctAnswer: 1}}, ( err, collection ) =>
@@ -73,13 +70,17 @@ module.exports.submitQuiz = function ( req, res )
 
 function getQuizDetails( collection, cb )
 {
-    console.log( collection );
+
     var quizDetails = [];
-    async.eachSeries( collection, function ( quizCode, next )
+    async.eachSeries( collection, function ( quiz, next )
     {
-        Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1}, ( err, quizobj ) =>
+        Quiz.findById( quiz.quizCode, {quizName: 1, author: 1, quizDuration: 1}, ( err, quizobj ) =>
         {
-            console.log( quizobj );
+            if ( err )
+                return res.json( {success: false, error: "Unable to fetch quiz details"} );
+            else
+                quizDetails.push( quizobj );
+            next();
         } );
 
     }, function ()
@@ -129,13 +130,13 @@ function getLeaderboard( collection, cb )
 module.exports.leaderboard = function ( req, res )
 {
 
-    Quiz.findById( req.body.quizCode, {usersParticipated: {userId: 1, marks: 1}}, ( err, collection ) =>
+    Quiz.findById( req.params.quizCode, {usersParticipated: {userId: 1, marks: 1}}, ( err, collection ) =>
     {
         if ( err )
             return res.json( {success: false, error: "Unable to fetch the participants"} );
         else
         {
-            getLeaderboard( collection, ( leaderboard ) =>
+            getLeaderboard( collection.usersParticipated, ( leaderboard ) =>
             {
                 return res.json( {success: true, leaderboard: leaderboard} );
             } );
@@ -143,9 +144,37 @@ module.exports.leaderboard = function ( req, res )
     } );
 }
 
+module.exports.getAuthoredQuizDetails = function ( req, res )
+{
+    User.findById( req.params.userId, {quizzesAuthored: 1}, ( err, collection ) =>
+    {
+        if ( err )
+            return res.json( {success: false, error: "Unable to fetch quizzes Authored"} );
+        else
+        {
+            getQuizDetails( collection.quizzesAuthored, ( quizDetails ) =>
+            {
+                return res.json( {success: true, quizDetails: quizDetails} );
+            } );
+        }
+    } );
+}
+
+module.exports.getAuthoredQuiz = function ( req, res )
+{
+    User.findById( req.params, quizCode, {}, ( err, quiz ) =>
+    {
+        if ( err )
+            return res.json( {success: false, error: "Unable to fetch quizzes Authored"} );
+        else
+            return res.json( {success: true, quiz: quiz} );
+    } );
+}
+
 module.exports.updateQuiz = function ( req, res )
 {
-
+    req.body.update.questions = eval( req.body.update.questions );
+    Quiz.updateOne( {quizCode: req.body.quizCode}, {$set: req.body.update} );
 }
 
 module.exports.deleteQuiz = function ( req, res )

@@ -121,6 +121,7 @@ $( document ).ready( function ()
     } );
     var createquiz=false
 var cnt=1
+var quizlength=0
 $("#forminner").hide()
 $("#terminals").hide()
 $( '#createquiz' ).click( function ()
@@ -151,6 +152,8 @@ $( '#createquiz' ).click( function ()
         
           <hr>
         </div>`;
+
+
             $("#forminner").html('');
             $("#forminner").html(defhtml);
             $("#forminner").show();
@@ -230,27 +233,89 @@ $("#submitquestion").click(function(){
 
 $( '#participatequiz' ).click( function (){
      //var quizidobj={quizid:''};
-    console.log("pressed");
+    //console.log("pressed");
      var quizCode=$("#quizid").val();
-    console.log(quizCode);  
-
+    //console.log(quizCode);  
+    //$("#quizsubmitform").html('');
      $.ajax( {
         method: 'GET',
         url:`/api/quiz/${quizCode}`,
         //data:quizCode,
         success:function(data){
             if ( data.success )
-            { console.log(data.quiz);
+            {   
+                console.log(data.quiz);
+                console.log(data.quiz.quizName);
+                //console.log(data.quiz.questions.length);
+                quizlength=data.quiz.questions.length;
+                $("#quiztitle").html(data.quiz.quizName);
+                var quizquestionsobj=data.quiz.questions;
+                for(var k=0;k<quizquestionsobj.length;k++)
+                {   var c=k+1;
+                    var quesattempting=quizquestionsobj[k].description;
+                    var optattempting=quizquestionsobj[k].options;
+                    var quizques=document.createElement('div');
+                    quizques.innerHTML=`<fieldset class="form-group" id="${c}-set">
+                    <legend class="mt-4" id="${c}-dispquestion">${c}Q)  ${quesattempting}</legend>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option1" value="1" >
+                          ${optattempting[0]}
+                        </label>
+                      </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option2" value="2">
+                        ${optattempting[1]}
+                      </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option3" value="3">
+                          ${optattempting[2]}
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option4" value="4">
+                          ${optattempting[3]}
+                        </label>
+                      </div>
+                  </fieldset>`;
+
+                    document.getElementById('quizsubmitform').appendChild(quizques);
+                }
+                $("#quizsubmitform").show();
+                $("#submitquizbutton").show();
+               $("#q-name").hide();
+
+               $("#participatequiz").hide();
+
             }
             else
-            console.log(data.error);
+            toastr.error(data.error);
         }
     })
 
             
 } );
 
+$("#submitquizbutton").click(function(){
 
+    //console.log(quizlength);
+   for(var y=1;y<=quizlength;y++)
+   { var tempobj=$(`input[name='${y}-question']:checked`).val();
+        if (tempobj==undefined)
+            tempobj='0';
+        console.log(tempobj);
+    }
+    $("#quiztitle").html('');
+    $("#quizsubmitform").html('');
+    $("#submitquizbutton").hide();
+    $("#q-name").show();
+    $("#participatequiz").show();
+    $("#quizid").val('');
+});
 
 
 } );
@@ -273,7 +338,7 @@ function onSignIn( googleobj )
         },
         error: ( err ) =>   
         {
-            console.log( err );
+            toastr.error( err );
         }
     } );
 

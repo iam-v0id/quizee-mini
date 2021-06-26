@@ -44,14 +44,14 @@ module.exports.login = function ( req, res )
                             return res.json( {success: false, message: "Unable to add user to DB", error: err} );
                         else
                         {
-                            req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
+                            req.session.user = {userId: user._id};
                             return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
                         }
                     } );
                 }
                 else
                 {
-                    req.session.user = {email: userObject.email, firstname: userObject.firstname, lastname: userObject.lastname};
+                    req.session.user = {userId: userObject._id};
                     return res.json( {success: true, email: userObject.email, firstname: userObject.firstname, lastname: userObject.lastname, _id: userObject._id} );
                 }
             } );
@@ -68,7 +68,7 @@ module.exports.login = function ( req, res )
             {
                 if ( user.authenticate( req.body.password ) )
                 {
-                    req.session.user = {email: user.email, firstname: user.firstname, lastname: user.lastname};
+                    req.session.user = {userId: user._id};
                     return res.json( {success: true, email: user.email, firstname: user.firstname, lastname: user.lastname, _id: user._id} );
                 }
                 else

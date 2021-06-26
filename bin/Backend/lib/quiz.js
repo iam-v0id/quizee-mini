@@ -62,7 +62,7 @@ module.exports.submitQuiz = function ( req, res )
                 timeStarted: req.body.timeStarted
             };
             Quiz.updateOne( {quizCode: req.body.quizCode}, {$push: {usersParticipated: submission}} );
-            User.updateOne( {userId: req.body.userId}, {$push: {quizzesParticipated: {quizCode: quizCode}}} );
+            User.updateOne( {userId: req.body.userId}, {$push: {quizzesParticipated: {quizCode: req.body.quizCode}}} );
             return res.json( {success: true, marks: marks} );
         }
     } );
@@ -162,23 +162,78 @@ module.exports.getAuthoredQuizDetails = function ( req, res )
 
 module.exports.getAuthoredQuiz = function ( req, res )
 {
-    User.findById( req.params, quizCode, {}, ( err, quiz ) =>
+
+    Quiz.findById( req.params.quizCode, {author: 1}, ( err, collection ) =>
     {
         if ( err )
-            return res.json( {success: false, error: "Unable to fetch quizzes Authored"} );
+            return res.json( {success: false, error: "Unable to verify your Identity"} );
         else
-            return res.json( {success: true, quiz: quiz} );
+        {
+            if ( collection.author == req.session.user.userId )
+            {
+                User.findById( req.params.quizCode, {}, ( err, quiz ) =>
+                {
+                    if ( err )
+                        return res.json( {success: false, error: "Unable to fetch Authored quizzes"} );
+                    else
+                        return res.json( {success: true, quiz: quiz} );
+                } );
+            }
+            else
+                return res.json( {success: false, msg: "You are Not Authorized"} );
+        }
     } );
+
+
 }
 
 module.exports.updateQuiz = function ( req, res )
 {
     req.body.update.questions = eval( req.body.update.questions );
-    Quiz.updateOne( {quizCode: req.body.quizCode}, {$set: req.body.update} );
+
+    Quiz.findById( req.body.quizCode, {author: 1}, ( err, collection ) =>
+    {
+        if ( err )
+            return res.json( {success: false, error: "Unable to verify your Identity"} );
+        else
+        {
+            if ( collection.author == req.session.user.userId )
+            {
+                Quiz.updateOne( {quizCode: req.body.quizCode}, {$set: req.body.update}, ( err ) =>
+                {
+                    if ( err )
+                        return res.json( {success: false, error: "Unable to update Quiz"} );
+                    else
+                        return res.json( {success: true, msg: "Quiz updated successfully"} );
+                } );
+            }
+            else
+                return res.json( {success: false, msg: "You are Not Authorized"} );
+        }
+    } );
+
 }
 
 module.exports.deleteQuiz = function ( req, res )
 {
-    Quiz.updateOne( {quizCode: req.params.quizCode}, {$set: {isDeleted: true}} );
+    Quiz.findById( req.params.quizCode, {author: 1}, ( err, collection ) =>
+    {
+        if ( err )
+            return res.json( {success: false, error: "Unable to verify your Identity"} );
+        else
+        {
+            if ( collection.author == req.session.user.userId )
+            {
+                Quiz.deleteOne( {quizCode: req.params.quizCode}, ( err ) =>
+                {
+                    if ( err )
+                        return res.json( {success: false, error: "Unable to delete Quiz"} );
+                    else
+                        return res.json( {success: true, msg: "Quiz has been deleted"} );
+                } );
+            }
+            else
+                return res.json( {success: false, msg: "You are Not Authorized"} );
+        }
+    } );
 }
-

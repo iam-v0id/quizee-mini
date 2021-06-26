@@ -30,9 +30,6 @@ app.use( session( {
     store: MongoStore.create( {mongoUrl: process.env.MONGO_CONNECTION_STRING} )
 } ) );
 
-app.use( '/', indexRouter );
-app.use( '/api', usersRouter );
-app.use( '/api', quizRouter );
 app.use( '/dashboard', function ( req, res, next )
 {
     if ( req.session && req.session.user )
@@ -40,5 +37,9 @@ app.use( '/dashboard', function ( req, res, next )
     else
         return res.redirect( '/' );
 }, dashboardRouter );
+app.use( '/', indexRouter );
+app.use( '/api', usersRouter );
+app.use( '/dashboard/api', quizRouter );
+
 
 module.exports = app;

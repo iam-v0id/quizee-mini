@@ -122,6 +122,7 @@ $( document ).ready( function ()
     var createquiz=false
 var cnt=1
 var quizlength=0
+var quiz_Code=''
 $("#forminner").hide()
 $("#terminals").hide()
 $( '#createquiz' ).click( function ()
@@ -248,6 +249,7 @@ $( '#participatequiz' ).click( function (){
                 console.log(data.quiz.quizName);
                 //console.log(data.quiz.questions.length);
                 quizlength=data.quiz.questions.length;
+                quiz_Code=data.quiz._id;
                 $("#quiztitle").html(data.quiz.quizName);
                 var quizquestionsobj=data.quiz.questions;
                 for(var k=0;k<quizquestionsobj.length;k++)
@@ -301,22 +303,66 @@ $( '#participatequiz' ).click( function (){
 } );
 
 $("#submitquizbutton").click(function(){
-
+    //$("#participatequiz").hide();
+   
+    var responses=[];
     //console.log(quizlength);
    for(var y=1;y<=quizlength;y++)
    { var tempobj=$(`input[name='${y}-question']:checked`).val();
-        if (tempobj==undefined)
-            tempobj='0';
-        console.log(tempobj);
-    }
+        
+        if ( tempobj== undefined )
+                    tempobj = 0;
+            
+        
+        responses.push(parseInt(tempobj));
+   }
+   console.log(responses);
+   $.ajax( {
+    type: "POST",
+    url: '/api/quiz/submit',
+    data: {quizCode:quiz_Code,responses:JSON.stringify(responses)},
+    success: function ( data )
+    {   
+        if ( data.success )
+        {   
+            console.log(data.marks);
+            toastr.success( "Quiz Submitted Sucessfully ");
+            $("#marks").html(data.marks);
+            $("#marks_declaration").show();
+            $("#marksokbutton").show();
+            $("#q-name").hide();
+            // $("#quizidlabel").hide();
+            // $("#quizid").hide();
+            //$("#quizid").val('');
+           
+        }
+        else
+           { toastr.error( data.error );
+            $("#q-name").show();
+            $("#quizid").val('');
+            $("#participatequiz").show();
+           }
+    },
+} );
     $("#quiztitle").html('');
     $("#quizsubmitform").html('');
     $("#submitquizbutton").hide();
-    $("#q-name").show();
-    $("#participatequiz").show();
-    $("#quizid").val('');
-});
+    // $("#q-name").show();
+    // $("#participatequiz").show();
+    // $("#quizid").val('');
 
+
+});
+$("#marksokbutton").click(function(){
+    
+    $("#q-name").show();
+    $("#quizid").val('');
+    $("#participatequiz").show();
+    $("#marks").html('');
+    $("#marks_declaration").html('');
+    $("#marksokbutton").hide();
+    
+});
 
 } );
 

@@ -89,7 +89,7 @@ module.exports =
                 timeStarted: req.body.timeStarted
             };
             await Quiz.updateOne( {_id: req.body.quizCode}, {$push: {usersParticipated: submission}} );
-            await User.updateOne( {userId: req.body.userId}, {$push: {quizzesParticipated: {quizCode: req.body.quizCode}}} );
+            await User.updateOne( {_id: req.body.userId}, {$push: {quizzesParticipated: {quizCode: req.body.quizCode}}} );
             return res.json( {success: true, marks: marks} );
         }
         catch ( err )
@@ -195,7 +195,7 @@ module.exports =
             {
                 try
                 {
-                    await Quiz.updateOne( {quizCode: req.body.quizCode}, {$set: req.body.update} );
+                    await Quiz.updateOne( {_id: req.body.quizCode}, {$set: req.body.update} );
                     return res.json( {success: true, msg: "Quiz updated successfully"} );
                 }
                 catch ( err )
@@ -221,7 +221,7 @@ module.exports =
             {
                 try
                 {
-                    await Quiz.deleteOne( {quizCode: req.params.quizCode} );
+                    await Quiz.deleteOne( {_id: req.params.quizCode} );
                     return res.json( {success: true, msg: "Quiz has been deleted"} );
                 }
                 catch ( err )

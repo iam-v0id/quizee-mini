@@ -27,7 +27,7 @@ const QuizSchema = new mongoose.Schema( {
         {
             userId: {type: mongoose.Schema.Types.ObjectID, ref: "User"},
             marks: {type: Number},
-            responses: [],
+            responses: [Number],
             timeEnded: {type: Number},
             timeStarted: {type: Number}
         },

@@ -99,8 +99,8 @@ $( document ).ready( function ()
             //quesobj.options=opt;
             questions.push( quesobj );
         }
-        quizobj = {quizName: quizName, quizDuration: quizDuration, author: author, questions: JSON.stringify( questions )};
-        //quizobj.questions=questions;
+        var quizobj = {quizName: quizName, quizDuration: quizDuration, author: author, questions: JSON.stringify( questions )};
+        //quizobj.questions=questions;  
         console.log( quizobj );
 
         $.ajax( {

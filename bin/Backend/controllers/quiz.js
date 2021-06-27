@@ -1,5 +1,4 @@
 const Quiz = require( '../models/quiz' );
-const user = require( '../models/user' );
 const User = require( "../models/user" );
 const async = require( "async" );
 
@@ -7,7 +6,7 @@ function getQuizDetails( collection, cb )
 {
 
     var quizDetails = [];
-    async.eachSeries( collection, function ( quiz, next )
+    async.eachSeries( collection, ( quiz, next ) =>
     {
         Quiz.findById( quiz.quizCode, {quizName: 1, author: 1, quizDuration: 1}, ( err, quizobj ) =>
         {
@@ -18,7 +17,7 @@ function getQuizDetails( collection, cb )
             next();
         } );
 
-    }, function ()
+    }, () =>
     {
         cb( quizDetails );
     } );
@@ -26,10 +25,10 @@ function getQuizDetails( collection, cb )
 
 module.exports =
 {
-    createQuiz: async function ( req, res )
+    createQuiz: async ( req, res ) =>
     {
         req.body.questions = eval( req.body.questions );
-
+        req.body.author = req.session.user.userId;
         var quiz = new Quiz( req.body );
         try
         {
@@ -51,12 +50,18 @@ module.exports =
 
     },
 
-    getQuiz: async function ( req, res )
+    getQuiz: async ( req, res ) =>
     {
         var quizCode = req.params.quizCode;
         try
         {
-            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}} );
+            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1}} );
+            for ( userobj of quiz.usersParticipated )
+                if ( userobj.userId == req.session.user.userId )
+                {
+                    console.log( "Already have" );
+                    return res.json( {success: false, error: "Already Attempted"} );
+                }
             return res.json( {success: true, quiz: quiz} );
         }
         catch ( err )
@@ -65,10 +70,9 @@ module.exports =
         }
     },
 
-    submitQuiz: async function ( req, res )
+    submitQuiz: async ( req, res ) =>
     {
         req.body.responses = eval( req.body.responses );
-        console.log( req.body.userId );
         var marks = 0;
 
         try
@@ -82,14 +86,14 @@ module.exports =
                     marks = marks + 1;
             }
             var submission = {
-                userId: req.body.userId,
+                userId: req.session.user.userId,
                 marks: marks,
                 responses: req.body.responses,
                 timeEnded: req.body.timeEnded,
                 timeStarted: req.body.timeStarted
             };
             await Quiz.updateOne( {_id: req.body.quizCode}, {$push: {usersParticipated: submission}} );
-            await User.updateOne( {_id: req.body.userId}, {$push: {quizzesParticipated: {quizCode: req.body.quizCode}}} );
+            await User.updateOne( {_id: req.session.user.userId}, {$push: {quizzesParticipated: {quizCode: req.body.quizCode}}} );
             return res.json( {success: true, marks: marks} );
         }
         catch ( err )
@@ -99,7 +103,7 @@ module.exports =
 
     },
 
-    getParticipatedQuiz: async function ( req, res )
+    getParticipatedQuiz: async ( req, res ) =>
     {
         try
         {
@@ -115,7 +119,7 @@ module.exports =
         }
     },
 
-    leaderboard: async function ( req, res )
+    leaderboard: async ( req, res ) =>
     {
         try
         {
@@ -141,7 +145,7 @@ module.exports =
         }
     },
 
-    getAuthoredQuizDetails: async function ( req, res )
+    getAuthoredQuizDetails: async ( req, res ) =>
     {
         try
         {
@@ -157,7 +161,7 @@ module.exports =
         }
     },
 
-    getAuthoredQuiz: async function ( req, res )
+    getAuthoredQuiz: async ( req, res ) =>
     {
 
         try
@@ -184,7 +188,7 @@ module.exports =
         }
     },
 
-    updateQuiz: async function ( req, res )
+    updateQuiz: async ( req, res ) =>
     {
         req.body.update.questions = eval( req.body.update.questions );
 
@@ -212,7 +216,7 @@ module.exports =
         }
     },
 
-    deleteQuiz: async function ( req, res )
+    deleteQuiz: async ( req, res ) =>
     {
         try
         {
@@ -236,5 +240,32 @@ module.exports =
         {
             return res.json( {success: false, error: "Unable to verify your Identity"} );
         }
+    },
+
+    validate: async ( req, res, next ) =>
+    {
+        var quiz;
+        quiz = req.body.update;
+        if ( quiz === undefined )
+            quiz = req.body;
+        quiz.questions = eval( quiz.questions );
+
+        // validate quizDuration
+        quiz.quizDuration = parseInt( quiz.quizDuration );
+        console.log( quiz.quizDuration );
+        if ( isNaN( quiz.quizDuration ) || quiz.quizDuration <= 0 )
+            return res.json( {success: false, error: 'Quiz Duration must be a Positive Integer'} );
+
+        // validate options and correctAnswer
+        for ( let i = 0; i < quiz.questions.length; i++ )
+        {
+            let s = new Set( quiz.questions[i].options );
+            if ( s.size != 4 )
+                return res.json( {success: false, error: "Options must be Unique in Question No. " + ( i + 1 )} );
+            quiz.questions[i].correctAnswer = parseInt( quiz.questions[i].correctAnswer );
+            if ( isNaN( quiz.questions[i].correctAnswer ) || quiz.questions[i].correctAnswer <= 0 || quiz.questions[i].correctAnswer > 4 )
+                return res.json( {success: false, error: 'Correct Answer must lie between 1 and 4'} );
+        }
+        next();
     }
 }

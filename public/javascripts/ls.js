@@ -1,4 +1,4 @@
-const ls = {
+const userObject = {
     saveUserInLocalStorage: function ( userJson )
     {
         window.localStorage.setItem( 'currentUser', JSON.stringify( userJson ) );
@@ -43,4 +43,4 @@ const ls = {
     }
 };
 
-export default ls;
+export default userObject;

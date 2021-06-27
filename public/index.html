@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../stylesheets/bootstrap.min (9).css">
+  <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
     integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -64,7 +64,7 @@
         </span>
         <br>
         <div id="g_id_onload" data-client_id="886525035479-b74p08eurbkfd68l9tar5v1c2m3skvsr.apps.googleusercontent.com"
-          data-context="signin" data-ux_mode="popup" data-callback="onSignIn" data-auto_prompt="false">
+          data-context="signin" data-ux_mode="popup" data-callback="onGoogleSignIn" data-auto_prompt="false">
         </div>
 
         <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_blue" data-text="signin_with"
@@ -83,8 +83,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
     integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/javascripts/site.js"></script>
+  <script type="module" src="/javascripts/site.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    function onGoogleSignIn( googleobj )
+    {
+      $.ajax( {
+        url: '/api/user/login',
+        method: 'POST',
+        data: googleobj,
+        success: ( obj ) =>
+        {
+          if ( obj.success )
+          {
+            toastr.success( 'Login Sucessful' );
+            window.localStorage.setItem( 'currentUser', JSON.stringify( obj ) );
+            location.href = "/dashboard";
+            console.log( obj );
+          }
+        },
+        error: ( err ) =>   
+        {
+          toastr.error( err );
+        }
+      } );
+    }
+  </script>
 </body>
 
 </html>

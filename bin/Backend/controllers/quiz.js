@@ -109,7 +109,8 @@ module.exports =
         {
             let collection = await User.findById( req.params.userId, {quizzesParticipated: 1} );
             getQuizDetails( collection.quizzesParticipated, ( quizDetails ) =>
-            {
+            {   console.log(quizDetails);
+                
                 return res.json( {success: true, quizDetails: quizDetails} );
             } );
         }

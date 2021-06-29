@@ -12,10 +12,14 @@ $( document ).ready( function ()
         } );
         location.href = "/";
     } );
+
+    
     var createquiz = false
     var cnt = 1
     var quizlength = 0
     var quiz_Code = ''
+
+    // Author Tab
     $( "#forminner" ).hide()
     $( "#terminals" ).hide()
     $( '#createquiz' ).click( function ()
@@ -131,142 +135,211 @@ $( document ).ready( function ()
     } );
 
 
-    $( '#participatequiz' ).click( function ()
-    {
-        //var quizidobj={quizid:''};
-        //console.log("pressed");
-        var quizCode = $( "#quizid" ).val();
-        //console.log(quizCode);  
-        //$("#quizsubmitform").html('');
+    // Participate Tab
+
+                    $( '#participatequiz' ).click( function ()
+                    {
+                        //var quizidobj={quizid:''};
+                        //console.log("pressed");
+                        var quizCode = $( "#quizid" ).val();
+                        //console.log(quizCode);  
+                        //$("#quizsubmitform").html('');
+                        $.ajax( {
+                            method: 'GET',
+                            url: `/dashboard/api/quiz/${quizCode}`,
+                            //data:quizCode,
+                            success: function ( data )
+                            {
+                                if ( data.success )
+                                {
+                                    console.log( data.quiz );
+                                    console.log( data.quiz.quizName );
+                                    //console.log(data.quiz.questions.length);
+                                    quizlength = data.quiz.questions.length;
+                                    quiz_Code = data.quiz._id;
+                                    $( "#quiztitle" ).html( data.quiz.quizName );
+                                    var quizquestionsobj = data.quiz.questions;
+                                    for ( var k = 0; k < quizquestionsobj.length; k++ )
+                                    {
+                                        var c = k + 1;
+                                        var quesattempting = quizquestionsobj[k].description;
+                                        var optattempting = quizquestionsobj[k].options;
+                                        var quizques = document.createElement( 'div' );
+                                        quizques.innerHTML = `<fieldset class="form-group" id="${c}-set">
+                                    <legend class="mt-4" id="${c}-dispquestion">${c}Q)  ${quesattempting}</legend>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option1" value="1" >
+                                        ${optattempting[0]}
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option2" value="2">
+                                        ${optattempting[1]}
+                                    </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option3" value="3">
+                                        ${optattempting[2]}
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option4" value="4">
+                                        ${optattempting[3]}
+                                        </label>
+                                    </div>
+                                </fieldset>`;
+
+                                        document.getElementById( 'quizsubmitform' ).appendChild( quizques );
+                                    }
+                                    $( "#quizsubmitform" ).show();
+                                    $( "#submitquizbutton" ).show();
+                                    $( "#q-name" ).hide();
+
+                                    $( "#participatequiz" ).hide();
+
+                                }
+                                else
+                                    toastr.error( data.error );
+                            }
+                        } )
+
+
+                    } );
+
+                    $( "#submitquizbutton" ).click( function ()
+                    {
+                        //$("#participatequiz").hide();
+
+                        var responses = [];
+                        //console.log(quizlength);
+                        for ( var y = 1; y <= quizlength; y++ )
+                        {
+                            var tempobj = $( `input[name='${y}-question']:checked` ).val();
+
+                            if ( tempobj == undefined )
+                                tempobj = 0;
+
+
+                            responses.push( parseInt( tempobj ) );
+                        }
+                        console.log( responses );
+                        $.ajax( {
+                            type: "POST",
+                            url: '/dashboard/api/quiz/submit',
+                            data: {quizCode: quiz_Code, responses: JSON.stringify( responses )},
+                            success: function ( data )
+                            {
+                                if ( data.success )
+                                {
+                                    console.log( data.marks );
+                                    toastr.success( "Quiz Submitted Sucessfully " );
+                                    $( "#marks" ).html( data.marks );
+                                    $( "#marks_declaration" ).show();
+                                    $( "#marksokbutton" ).show();
+                                    $( "#q-name" ).hide();
+                                    // $("#quizidlabel").hide();
+                                    // $("#quizid").hide();
+                                    //$("#quizid").val('');
+
+                                }
+                                else
+                                {
+                                    toastr.error( data.error );
+                                    $( "#q-name" ).show();
+                                    $( "#quizid" ).val( '' );
+                                    $( "#participatequiz" ).show();
+                                }
+                            },
+                        } );
+                        $( "#quiztitle" ).html( '' );
+                        $( "#quizsubmitform" ).html( '' );
+                        $( "#submitquizbutton" ).hide();
+                        // $("#q-name").show();
+                        // $("#participatequiz").show();
+                        // $("#quizid").val('');
+
+
+                    } );
+                    $( "#marksokbutton" ).click( function ()
+                    {
+
+                        $( "#q-name" ).show();
+                        $( "#quizid" ).val( '' );
+                        $( "#participatequiz" ).show();
+                        $( "#marks" ).html( '' );
+                        $( "#marks_declaration" ).html( '' );
+                        $( "#marksokbutton" ).hide();
+
+                    } );
+
+    //Leader Board Tab
+
+    
+    $("#leaderboard-tab").click(function(){
+        var quizzesParticipatedId=userObject.getCurrentUserId();
+
         $.ajax( {
             method: 'GET',
-            url: `/dashboard/api/quiz/${quizCode}`,
-            //data:quizCode,
-            success: function ( data )
+            url: `/dashboard/api/quiz/participated/${quizzesParticipatedId}`,
+            success:function(data)
             {
-                if ( data.success )
-                {
-                    console.log( data.quiz );
-                    console.log( data.quiz.quizName );
-                    //console.log(data.quiz.questions.length);
-                    quizlength = data.quiz.questions.length;
-                    quiz_Code = data.quiz._id;
-                    $( "#quiztitle" ).html( data.quiz.quizName );
-                    var quizquestionsobj = data.quiz.questions;
-                    for ( var k = 0; k < quizquestionsobj.length; k++ )
-                    {
-                        var c = k + 1;
-                        var quesattempting = quizquestionsobj[k].description;
-                        var optattempting = quizquestionsobj[k].options;
-                        var quizques = document.createElement( 'div' );
-                        quizques.innerHTML = `<fieldset class="form-group" id="${c}-set">
-                    <legend class="mt-4" id="${c}-dispquestion">${c}Q)  ${quesattempting}</legend>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option1" value="1" >
-                          ${optattempting[0]}
-                        </label>
-                      </div>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option2" value="2">
-                        ${optattempting[1]}
-                      </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option3" value="3">
-                          ${optattempting[2]}
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option4" value="4">
-                          ${optattempting[3]}
-                        </label>
-                      </div>
-                  </fieldset>`;
-
-                        document.getElementById( 'quizsubmitform' ).appendChild( quizques );
+                    if(data.success)
+                        {   var qarray=data.quizDetails;
+                           
+                            console.log("quizzes received");
+                            console.log(qarray);
+                            for(var qz=0;qz<qarray.length; qz++)
+                            {
+                                    var qid=qz+1;
+                                    //console.log()
+                                    var quizofuser = document.createElement( 'div' );
+                                    quizofuser.classList.add("col");
+                                    quizofuser.classList.add("span_1_of_3");
+                                    quizofuser.innerHTML =`
+                                    <div class="card text-white bg-dark mb-3"  style="max-width: 20rem;">
+                                    <div class="card-header">${qarray[qz].quizName}</div>
+                                    <div class="card-body"  id="${qid}-quizparticipated">
+                                      <h4 class="card-title">${qarray[qz].quizName}</h4>
+                                      <p class="card-text" >User Id: ${qarray[qz].author}</p>
+                                      <p class="card-text" id="${qid}-quizname">Quiz Id: ${qarray[qz]._id}</p>
+                                      <p class="card-text" >Duration: ${qarray[qz].quizDuration} min</p>
+                                      <button type="button" class="btn btn-secondary" id="${qarray[qz]._id}" onclick="myFunction(event)">Get Leader Board</button>
+                                    </div>
+                                  </div>`
+                                  document.getElementById( 'quizparticipatedlist' ).appendChild( quizofuser );
+                            }
+                           $("#quizparticipatedlist").show();
+                        }
+                    else{
+                        toastr.error( data.error );
                     }
-                    $( "#quizsubmitform" ).show();
-                    $( "#submitquizbutton" ).show();
-                    $( "#q-name" ).hide();
-
-                    $( "#participatequiz" ).hide();
-
-                }
-                else
-                    toastr.error( data.error );
             }
-        } )
 
+                 });
+       
+            } );
 
-    } );
+    //clicking ok after viewing leader board            
+    
+    $("#lb-okbutton").click(function(){
+        $("#lb-table-body").html('');
+        $("#leaderboardheading").hide();
+        $("#lb-table").hide();
+        $("#lb-okbutton").hide();
+        $("#quizheading").show();
+        $("#quizparticipatedlist").show();
+    });
 
-    $( "#submitquizbutton" ).click( function ()
-    {
-        //$("#participatequiz").hide();
+    //on shiftingto other tabs
+    $("#home-tab").click(function(){
+        $("#quizparticipatedlist").html('');
+    });
+    $("#profile-tab").click(function(){
+        $("#quizparticipatedlist").html('');
+    });
+});
 
-        var responses = [];
-        //console.log(quizlength);
-        for ( var y = 1; y <= quizlength; y++ )
-        {
-            var tempobj = $( `input[name='${y}-question']:checked` ).val();
-
-            if ( tempobj == undefined )
-                tempobj = 0;
-
-
-            responses.push( parseInt( tempobj ) );
-        }
-        console.log( responses );
-        $.ajax( {
-            type: "POST",
-            url: '/dashboard/api/quiz/submit',
-            data: {quizCode: quiz_Code, responses: JSON.stringify( responses )},
-            success: function ( data )
-            {
-                if ( data.success )
-                {
-                    console.log( data.marks );
-                    toastr.success( "Quiz Submitted Sucessfully " );
-                    $( "#marks" ).html( data.marks );
-                    $( "#marks_declaration" ).show();
-                    $( "#marksokbutton" ).show();
-                    $( "#q-name" ).hide();
-                    // $("#quizidlabel").hide();
-                    // $("#quizid").hide();
-                    //$("#quizid").val('');
-
-                }
-                else
-                {
-                    toastr.error( data.error );
-                    $( "#q-name" ).show();
-                    $( "#quizid" ).val( '' );
-                    $( "#participatequiz" ).show();
-                }
-            },
-        } );
-        $( "#quiztitle" ).html( '' );
-        $( "#quizsubmitform" ).html( '' );
-        $( "#submitquizbutton" ).hide();
-        // $("#q-name").show();
-        // $("#participatequiz").show();
-        // $("#quizid").val('');
-
-
-    } );
-    $( "#marksokbutton" ).click( function ()
-    {
-
-        $( "#q-name" ).show();
-        $( "#quizid" ).val( '' );
-        $( "#participatequiz" ).show();
-        $( "#marks" ).html( '' );
-        $( "#marks_declaration" ).html( '' );
-        $( "#marksokbutton" ).hide();
-
-    } );
-} );

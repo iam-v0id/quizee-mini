@@ -9,9 +9,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"
     integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <link rel="stylesheet" href="../stylesheets/dashboard.css">
   <title>Dashboard</title>
 </head>
+<body>
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container-fluid">
@@ -27,11 +28,15 @@
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
                 role="tab" aria-controls="home" aria-selected="true">Author</button>
-            </li>
+            </li>&nbsp;
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
                 role="tab" aria-controls="profile" aria-selected="false">Participate</button>
-            </li>
+            </li>&nbsp;
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="leaderboard-tab" data-bs-toggle="tab" data-bs-target="#leaderboard" type="button"
+                role="tab" aria-controls="profile" aria-selected="false">Leader Board</button>
+            </li>&nbsp;
           </ul>
         </ul>
         <div class="d-flex">
@@ -41,98 +46,124 @@
     </div>
   </nav>
 </header>
+
+
+
 <main>
-  <div class="tab-content" id="myTabContent" style="padding: 12vh; padding-left: 5%; padding-right: 5%;">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-      <button id="createquiz" type="button" class="btn btn-success">Create Quiz</button><br>
-      <div id="created" style="display: none;">
-        <h3>Quiz has been Created</h3>
-        <h1 id="quizcreatedid"></h1>
-      </div>
-      <form id="quizform" style="padding-left: 100px; padding-right: 400px; background-color: seashell;">
-        <div id="forminner">
-          <div class="form-group" id="qname">
-            <label for="quizname" class="form-label mt-4">Quiz name</label>
-            <input type="text" class="form-control" id="quizname" aria-describedby="emailHelp"
-              placeholder="Enter Quiz name">
+  <div class="tab-content" id="myTabContent" style="padding: 12vh;padding-top:10%; padding-left: 5%; padding-right: 5%;">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <button id="createquiz" type="button" class="btn btn-success">Create Quiz</button><br>
+          <div id="created" style="display: none;">
+            <h3>Quiz has been Created</h3>
+            <h1 id="quizcreatedid"></h1>
           </div>
-          <div class="form-group" id="qdur">
-            <label for="quizname" class="form-label mt-4">Quiz duration</label>
-            <input type="number" value="5" min="0" step="5" class="form-control" id="quizduration"
-              aria-describedby="emailHelp" placeholder="Enter Quiz duration">
-          </div>
-          <div id="1">
-            <div class="form-group">
-              <label for="question1" class="form-label mt-4">Question 1</label>
-              <input id="1question" type="text" class="form-control" aria-describedby="emailHelp"
-                placeholder="Enter question">
+          <form id="quizform" style="padding-left: 100px; padding-right: 400px; background-color: seashell;">
+            <div id="forminner">
+              <div class="form-group" id="qname">
+                <label for="quizname" class="form-label mt-4">Quiz name</label>
+                <input type="text" class="form-control" id="quizname" aria-describedby="emailHelp"
+                  placeholder="Enter Quiz name">
+              </div>
+              <div class="form-group" id="qdur">
+                <label for="quizname" class="form-label mt-4">Quiz duration</label>
+                <input type="number" value="5" min="0" step="5" class="form-control" id="quizduration"
+                  aria-describedby="emailHelp" placeholder="Enter Quiz duration">
+              </div>
+              <div id="1">
+                <div class="form-group">
+                  <label for="question1" class="form-label mt-4">Question 1</label>
+                  <input id="1question" type="text" class="form-control" aria-describedby="emailHelp"
+                    placeholder="Enter question">
+                </div>
+                <div class="form-group">
+                  <label for="quizname" class="form-label mt-4">Options</label>
+                  <input type="text" class="form-control" id="1opt1" aria-describedby="emailHelp"
+                    placeholder="Enter Option1">
+                </div>
+                <div class="form-group">&nbsp;
+                  <input type="text" class="form-control" id="1opt2" aria-describedby="emailHelp"
+                    placeholder="Enter Option2">
+                </div>
+                <div class="form-group">&nbsp;
+                  <input type="text" class="form-control" id="1opt3" aria-describedby="emailHelp"
+                    placeholder="Enter Option3">
+                </div>
+                <div class="form-group">&nbsp;
+                  <input type="text" class="form-control" id="1opt4" aria-describedby="emailHelp"
+                    placeholder="Enter Option4">
+                </div>
+                <div class="form-group">
+                  <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
+                  <select class="form-select" id="1crctoption">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                  </select>
+                </div>
+
+                <hr>
+              </div>
+              </div>
+                <div id="terminals" style="padding-bottom:3vw">
+                  <button type="button" class="btn btn-success" id="addquestion">Add Question</button>&nbsp;
+                  <button type="button" class="btn btn-danger" id="deletequestion">Remove Question</button>&nbsp;
+                  <button type="button" class="btn btn-danger" id="clearquiz">Clear Quiz</button>&nbsp;
+                  <button type="button" class="btn btn-primary" id="submitquestion">Submit</button>
+                </div>
+              </form>
             </div>
-            <div class="form-group">
-              <label for="quizname" class="form-label mt-4">Options</label>
-              <input type="text" class="form-control" id="1opt1" aria-describedby="emailHelp"
-                placeholder="Enter Option1">
-            </div>
-            <div class="form-group">&nbsp;
-              <input type="text" class="form-control" id="1opt2" aria-describedby="emailHelp"
-                placeholder="Enter Option2">
-            </div>
-            <div class="form-group">&nbsp;
-              <input type="text" class="form-control" id="1opt3" aria-describedby="emailHelp"
-                placeholder="Enter Option3">
-            </div>
-            <div class="form-group">&nbsp;
-              <input type="text" class="form-control" id="1opt4" aria-describedby="emailHelp"
-                placeholder="Enter Option4">
-            </div>
-            <div class="form-group">
-              <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
-              <select class="form-select" id="1crctoption">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-            </div>
 
-            <hr>
-          </div>
-        </div>
-        <div id="terminals" style="padding-bottom:3vw">
-          <button type="button" class="btn btn-success" id="addquestion">Add Question</button>&nbsp;
-          <button type="button" class="btn btn-danger" id="deletequestion">Remove Question</button>&nbsp;
-          <button type="button" class="btn btn-danger" id="clearquiz">Clear Quiz</button>&nbsp;
-          <button type="button" class="btn btn-primary" id="submitquestion">Submit</button>
-        </div>
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="form-group" id="q-name">
+                      <label for="quizid" class="form-label mt-4" id="quizidlabel">Quiz id</label>
+                      <input type="text" class="form-control" id="quizid" aria-describedby="emailHelp" placeholder="Enter Quiz id">
+                    </div><br>
 
-      </form>
-    </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <div class="form-group" id="q-name">
-        <label for="quizid" class="form-label mt-4" id="quizidlabel">Quiz id</label>
-        <input type="text" class="form-control" id="quizid" aria-describedby="emailHelp" placeholder="Enter Quiz id">
-      </div><br>
+                    <button id="participatequiz" type="button" class="btn btn-success">Participate</button><br><br>
 
-      <button id="participatequiz" type="button" class="btn btn-success">Participate</button><br><br>
+                    <div id="marks_declaration" style="display: none;">
+                    <span>
+                        <h1 style="display:inline;" >Your Score: </h1>
+                        <h1   style="display:inline;"    id="marks"></h1>
+                      </span>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
+                    <br>
+                    <div>
+                      <h2 id="quiztitle"></h2>
+                    </div><br>
+                    <div id="quizsubmitform" style="display: none;" >
 
-      <div id="marks_declaration" style="display: none;">
-        <h1>Your Score: </h1>
-        <span>
-          <h1 id="marks"></h1>
-        </span>
-      </div>
-      <br>
-      <button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
-      <br>
-      <div>
-        <h2 id="quiztitle"></h2>
-      </div><br>
+                    </div><br><br>
 
-      <div id="quizsubmitform" style="display: none;">
-      </div><br><br>
+                    <button type="button" class="btn btn-primary" id="submitquizbutton" style="display: none;">Submit</button>
+                  </div>
+   
+                                       <!-- leader board html -->
+              <div class="tab-pane fade" id="leaderboard" role="tabpanel" aria-labelledby="leaderboard-tab">
+                  <h2 id="quizheading">Quizzes Participated</h2><br>
+                  <div style="display: none;" id="quizparticipatedlist"  class="section group">
 
-      <button type="button" class="btn btn-primary" id="submitquizbutton" style="display: none;">Submit</button>
-    </div>
-
+                  </div>
+                  <h2 style="display: none;" id="leaderboardheading">Leader Board</h2>
+                  <table class="table table-hover" id="lb-table" style="display: none;" >
+                    <thead>
+                      <tr>
+                        <th scope="col">Score</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                      </tr>
+                    </thead>
+                    <tbody id="lb-table-body">
+                     
+                    </tbody>
+                  </table><br><br>
+                  <button type="button" class="btn btn-primary" id="lb-okbutton" style="display: none;">Ok</button>
+                  
+              </div>
   </div>
 
 </main>
@@ -140,7 +171,50 @@
 
 </footer>
 
-<body>
+
+  <script>
+    function myFunction(event) { 
+                var x = event.target;
+                console.log(x.id);
+                var reqid=x.id;
+                $.ajax( {
+                  method: 'GET',
+                  url: `/dashboard/api/quiz/leaderboard/${reqid}`,
+                  success:function(data)
+                      {
+                        if(data.success)
+                        {
+                            var lb_array=data.leaderboard;
+                            lb_array.sort(function(a, b) { 
+                                return b.marks - a.marks;
+                                });
+                                console.log(lb_array);
+                            for(var lb=0;lb<lb_array.length;lb++)
+                            {
+                                  //var lb_e=lb+1;
+                              
+                                var lb_record = document.createElement( 'tr' );
+                                lb_record.innerHTML=` <th scope="row">${lb_array[lb].marks}</th>
+                                                        <td>${lb_array[lb].email}</td>
+                                                        <td>${lb_array[lb].firstname}</td>
+                                                        <td>${lb_array[lb].lastname}</td>`
+                                document.getElementById( 'lb-table-body' ).appendChild( lb_record );
+                            }
+                            
+                            $("#quizheading").hide();
+                            $("#quizparticipatedlist").hide();
+                            $("#leaderboardheading").show();
+                            $("#lb-table").show();
+                            $("#lb-okbutton").show();
+                        }
+                        else{
+                          toastr.error( err );
+                        }
+                      }
+
+                   });
+          }
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>

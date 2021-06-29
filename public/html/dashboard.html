@@ -50,12 +50,33 @@
 
 
 <main>
+<<<<<<< HEAD
   <div class="tab-content" id="myTabContent" style="padding: 12vh;padding-top:10%; padding-left: 5%; padding-right: 5%;">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           <button id="createquiz" type="button" class="btn btn-success">Create Quiz</button><br>
           <div id="created" style="display: none;">
             <h3>Quiz has been Created</h3>
             <h1 id="quizcreatedid"></h1>
+=======
+  <div class="tab-content" id="myTabContent" style="padding: 12vh; padding-left: 5%; padding-right: 5%;">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <button id="createquiz" type="button" class="btn btn-success">Create Quiz</button><br>
+      <div id="created" style="display: none;">
+        <h3>Quiz has been Created</h3>
+        <h1 id="quizcreatedid"></h1>
+      </div>
+      <form id="quizform" style="padding-left: 7%; padding-right: 7%; background-color: seashell;">
+        <div id="forminner">
+          <div class="form-group" id="qname">
+            <label for="quizname" class="form-label mt-4">Quiz name</label>
+            <input type="text" class="form-control" id="quizname" aria-describedby="emailHelp"
+              placeholder="Enter Quiz name">
+          </div>
+          <div class="form-group" id="qdur">
+            <label for="quizname" class="form-label mt-4">Quiz duration</label>
+            <input type="number" value="5" min="0" step="5" class="form-control" id="quizduration"
+              aria-describedby="emailHelp" placeholder="Enter Quiz duration">
+>>>>>>> 25d892d4f716eba26c063cebd63fc34c58075e51
           </div>
           <form id="quizform" style="padding-left: 100px; padding-right: 400px; background-color: seashell;">
             <div id="forminner">

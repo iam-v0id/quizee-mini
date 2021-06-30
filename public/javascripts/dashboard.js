@@ -20,8 +20,7 @@ $( document ).ready( function ()
     var quiz_Code = ''
 
     // Author Tab
-    $( "#forminner" ).hide()
-    $( "#terminals" ).hide()
+    
     $( '#createquiz' ).click( function ()
     {
         createquiz = true
@@ -29,15 +28,15 @@ $( document ).ready( function ()
         {
             $( "#created" ).hide();
             //$("#quizform").show();
-            var defhtml = `<div class="form-group" id="qname"><label for="quizname" class="form-label mt-4">Quiz name</label><input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Quiz name"></div><div class="form-group" id="qdur"><label for="quizname" class="form-label mt-4">Quiz duration</label><input type="number" value="5" min="0" step="5" class="form-control" id="quizduration" aria-describedby="emailHelp" placeholder="Enter Quiz duration"></div><div id="1"><div class="form-group" ><label for="question1" class="form-label mt-4">Question 1</label><input id="1question" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label><input  type="text" class="form-control" id="1opt1" aria-describedby="emailHelp" placeholder="Enter Option1"></div>
+            var defhtml = `<div class="form-group" id="qname"><label for="quizname" class="form-label mt-4">Quiz Name</label><input type="text" class="form-control" id="quizname" aria-describedby="emailHelp" placeholder="Enter Quiz Name"></div><div class="form-group" id="qdur"><label for="quizname" class="form-label mt-4">Quiz Duration</label><input type="number" value="5" min="0" step="5" class="form-control" id="quizduration" aria-describedby="emailHelp" placeholder="Enter Quiz Duration"></div><div id="1"><div class="form-group" ><label for="question1" class="form-label mt-4">Question 1</label><input id="1question" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter Question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label><input  type="text" class="form-control" id="1opt1" aria-describedby="emailHelp" placeholder="Enter Option 1"></div>
             <div class="form-group" >&nbsp;
-            <input type="text" class="form-control" id="1opt2" aria-describedby="emailHelp" placeholder="Enter Option2">
+            <input type="text" class="form-control" id="1opt2" aria-describedby="emailHelp" placeholder="Enter Option 2">
           </div>
           <div class="form-group" >&nbsp;
-            <input type="text" class="form-control" id="1opt3" aria-describedby="emailHelp" placeholder="Enter Option3">
+            <input type="text" class="form-control" id="1opt3" aria-describedby="emailHelp" placeholder="Enter Option 3">
           </div>
           <div class="form-group" >&nbsp;
-            <input type="text" class="form-control" id="1opt4" aria-describedby="emailHelp" placeholder="Enter Option4">
+            <input type="text" class="form-control" id="1opt4" aria-describedby="emailHelp" placeholder="Enter Option 4">
           </div>
           <div class="form-group">
             <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
@@ -53,7 +52,7 @@ $( document ).ready( function ()
         </div>`;
 
 
-            $( "#forminner" ).html( '' );
+            // $( "#forminner" ).html( '' );
             $( "#forminner" ).html( defhtml );
             $( "#forminner" ).show();
             $( "#terminals" ).show();
@@ -65,7 +64,7 @@ $( document ).ready( function ()
 
         cnt++;
         var z = document.createElement( 'div' ); // is a node
-        z.innerHTML = '<div id=' + cnt + '><div class="form-group" > <label for="question1" class="form-label mt-4">Question ' + cnt + '</label><input type="text" id="' + cnt + 'question" class="form-control" aria-describedby="emailHelp" placeholder="Enter question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label> <input type="text" class="form-control" id="' + cnt + 'opt1" aria-describedby="emailHelp" placeholder="Enter Option1"> </div><div class="form-group"  >&nbsp;<input type="text" class="form-control" id="' + cnt + 'opt2" aria-describedby="emailHelp" placeholder="Enter Option2"></div><div class="form-group">&nbsp;<input type="email" class="form-control" id="' + cnt + 'opt3" aria-describedby="emailHelp" placeholder="Enter Option3"></div><div class="form-group" >&nbsp; <input type="email" class="form-control" id="' + cnt + 'opt4" aria-describedby="emailHelp" placeholder="Enter Option4"></div><div class="form-group"  ><label for="crctoption" class="form-label mt-4">Select the Correct Option</label><select class="form-select" id="' + cnt + 'crctoption"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><hr></div>';
+        z.innerHTML = '<div id=' + cnt + '><div class="form-group" > <label for="question1" class="form-label mt-4">Question ' + cnt + '</label><input type="text" id="' + cnt + 'question" class="form-control" aria-describedby="emailHelp" placeholder="Enter Question"></div><div class="form-group" ><label for="quizname" class="form-label mt-4">Options</label> <input type="text" class="form-control" id="' + cnt + 'opt1" aria-describedby="emailHelp" placeholder="Enter Option 1"> </div><div class="form-group"  >&nbsp;<input type="text" class="form-control" id="' + cnt + 'opt2" aria-describedby="emailHelp" placeholder="Enter Option 2"></div><div class="form-group">&nbsp;<input type="email" class="form-control" id="' + cnt + 'opt3" aria-describedby="emailHelp" placeholder="Enter Option 3"></div><div class="form-group" >&nbsp; <input type="email" class="form-control" id="' + cnt + 'opt4" aria-describedby="emailHelp" placeholder="Enter Option 4"></div><div class="form-group"  ><label for="crctoption" class="form-label mt-4">Select the Correct Option</label><select class="form-select" id="' + cnt + 'crctoption"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><hr></div>';
         //document.body.appendChild(z);
         document.getElementById( 'forminner' ).appendChild( z );
     } );
@@ -121,8 +120,9 @@ $( document ).ready( function ()
                     $( "#forminner" ).hide();
                     $( "#terminals" ).hide();
                     $( "#createquiz" ).show();
-                    $( "#quizcreatedid" ).html( data.quizCode );
+                    $( "#quizcreatedid" ).html(`Quiz Code : ${data.quizCode}` );
                     $( "#created" ).show();
+                    $("#quizid-okbutton").show();
                     //userObject.saveUserInLocalStorage( data );
                     // location.href = "/dashboard";
                 }
@@ -134,8 +134,15 @@ $( document ).ready( function ()
 
     } );
 
+    $("#quizid-okbutton").click(function(){
+        $( "#created" ).hide();
+        $("#quizid-okbutton").hide();
+    });
 
-    // Participate Tab
+
+                      
+    
+                          // Participate Tab
 
                     $( '#participatequiz' ).click( function ()
                     {
@@ -165,33 +172,37 @@ $( document ).ready( function ()
                                         var quesattempting = quizquestionsobj[k].description;
                                         var optattempting = quizquestionsobj[k].options;
                                         var quizques = document.createElement( 'div' );
-                                        quizques.innerHTML = `<fieldset class="form-group" id="${c}-set">
-                                    <legend class="mt-4" id="${c}-dispquestion">${c}Q)  ${quesattempting}</legend>
-                                    <div class="form-check">
+                                        $(quizques).attr('style','padding-left : 8%');
+                                        quizques.innerHTML = `
+                                        <div class="card border-primary mb-3" style="max-width: 90%;" id="${c}-set">
+                                        <div class="card-header" id="${c}-dispquestion">${c}Q)  ${quesattempting}</div>
+                                        <div class="card-body">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option1" value="1" >
+                                            ${optattempting[0]}
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
                                         <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option1" value="1" >
-                                        ${optattempting[0]}
+                                            <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option2" value="2">
+                                            ${optattempting[1]}
                                         </label>
-                                    </div>
-                                    <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option2" value="2">
-                                        ${optattempting[1]}
-                                    </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option3" value="3">
-                                        ${optattempting[2]}
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option4" value="4">
-                                        ${optattempting[3]}
-                                        </label>
-                                    </div>
-                                </fieldset>`;
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option3" value="3">
+                                            ${optattempting[2]}
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="${c}-question" id="${c}-option4" value="4">
+                                            ${optattempting[3]}
+                                            </label>
+                                        </div>
+                                        </div>
+                                </div>`;
 
                                         document.getElementById( 'quizsubmitform' ).appendChild( quizques );
                                     }
@@ -276,7 +287,7 @@ $( document ).ready( function ()
 
                     } );
 
-    //Leader Board Tab
+                    //Leader Board Tab
 
     
     $("#leaderboard-tab").click(function(){
@@ -300,14 +311,15 @@ $( document ).ready( function ()
                                     quizofuser.classList.add("col");
                                     quizofuser.classList.add("span_1_of_3");
                                     quizofuser.innerHTML =`
-                                    <div class="card text-white bg-dark mb-3"  style="max-width: 20rem;">
-                                    <div class="card-header">${qarray[qz].quizName}</div>
-                                    <div class="card-body"  id="${qid}-quizparticipated">
+                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 23rem;" >
+                                    <div class="card-header">Quiz Code : ${qarray[qz]._id}</div>
+                                    <div class="card-body"  >
                                       <h4 class="card-title">${qarray[qz].quizName}</h4>
-                                      <p class="card-text" >User Id: ${qarray[qz].author}</p>
-                                      <p class="card-text" id="${qid}-quizname">Quiz Id: ${qarray[qz]._id}</p>
-                                      <p class="card-text" >Duration: ${qarray[qz].quizDuration} min</p>
-                                      <button type="button" class="btn btn-secondary" id="${qarray[qz]._id}" onclick="myFunction(event)">Get Leader Board</button>
+                                      <p class="card-text" >Author : ${qarray[qz].author}</p>
+                                      <p class="card-text" >Author's email : <a href="mailto:${qarray[qz].author_email}">${qarray[qz].author_email}</a></p>
+                                      <p class="card-text" >Participated : ${qarray[qz].usersParticipated}</p>
+                                      <p class="card-text" >Duration : ${qarray[qz].quizDuration} min</p>
+                                      <button type="button" class="btn btn-info" id="${qarray[qz]._id}" onclick="myFunction(event)">Leader Board</button>
                                     </div>
                                   </div>`
                                   document.getElementById( 'quizparticipatedlist' ).appendChild( quizofuser );
@@ -334,12 +346,155 @@ $( document ).ready( function ()
         $("#quizparticipatedlist").show();
     });
 
-    //on shiftingto other tabs
+    //on shifting to other tabs
     $("#home-tab").click(function(){
         $("#quizparticipatedlist").html('');
     });
     $("#profile-tab").click(function(){
         $("#quizparticipatedlist").html('');
     });
+    $("#myquizzes-tab").click(function(){
+        $("#quizparticipatedlist").html('');
+    });
+
+                //my quizzes  tab designing
+
+    
+    $("#myquizzes-tab").click(function(){
+        var quizzesconductedId=userObject.getCurrentUserId();
+
+        $.ajax( {
+            method: 'GET',
+            url: `/dashboard/api/quiz/myquizzes/all/${quizzesconductedId}`,
+            success:function(data)
+                {
+                    if(data.success)
+                    {
+                            console.log("conducted list has come");
+                            var q_conductedarray=data.quizDetails;
+                           
+                            console.log("quizzes received");
+                            console.log(q_conductedarray);
+                            for(var qz=0;qz<q_conductedarray.length; qz++)
+                            {
+                                    var qid=qz+1;
+                                    //console.log()
+                                    var quizconducted = document.createElement( 'div' );
+                                    quizconducted.classList.add("col");
+                                    quizconducted.classList.add("span_1_of_3");
+                                    quizconducted.innerHTML =`
+                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 23rem;" id="${qid}-quizconducted">
+                                    <div class="card-header">Quiz Code: ${q_conductedarray[qz]._id}</div>
+                                    <div class="card-body"  >
+                                      <h4 class="card-title">${q_conductedarray[qz].quizName}</h4>
+                                      <p class="card-text" >Number of Questions: ${q_conductedarray[qz].question_count}</p>
+                                      <p class="card-text" >Users participated: ${q_conductedarray[qz].usersParticipated}</p>
+                                      <p class="card-text" >Duration: ${q_conductedarray[qz].quizDuration} min</p>
+                                        <div class="d-flex justify-content-between" id="${qid}-buttonblock">
+                                            <e id="edit-button-${qid}"><button type="button" class="btn btn-info" >Edit</button></e>
+                                            <d id="${q_conductedarray[qz]._id}"><button type="button" class="btn btn-danger">Delete</button></d>
+                                            <div id="asking-deletion-${qid}" style="display:none;">
+                                                <b id="del-cancel-${qid}"><button type="button" class="btn btn-info" >Cancel</button> </b>&emsp;
+                                                <cd id="del-confirm-${qid}"><button type="button" class="btn btn-danger" >Confirm</button></cb>
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
+                                  </div>`
+                                  document.getElementById( 'myquizzes-list' ).appendChild( quizconducted );
+                            }
+                           $("#myquizzes-list").show();
+                    }
+                    else{
+                        toastr.error( data.error );
+                    }
+                }
+        
+        });
+    
+    
+    });
+
+    $("#home-tab").click(function(){
+        $("#myquizzes-list").html('');
+    });
+    $("#profile-tab").click(function(){
+        $("#myquizzes-list").html('');
+    });
+    $("#leaderboard-tab").click(function(){
+        $("#myquizzes-list").html('');
+    });
+                
+    // Deleting Quiz operation
+    $(document).on('click','d',function()
+    {
+            var testid=$(this).attr('id');
+            console.log(testid);
+            
+            var edit_block= $(this).next().attr('id');
+            console.log(edit_block);
+            $(`#${testid}`).hide();
+            $(`#${edit_block}`).show();
+            
+    });
+
+    $(document).on('click','b',function(){
+        var del_edit_id=$(this).parent().attr('id');
+        $(`#${del_edit_id}`).hide();
+        var delete_id=$(this).parent().prev().attr('id');
+        $(`#${delete_id}`).show();
+    });
+
+
+    $(document).on('click','cd',function(){
+        var quiztobedeleted_id=$(this).parent().parent().parent().parent().attr('id');
+        console.log(quiztobedeleted_id);
+        var delete_conf_id=$(this).parent().prev().attr('id');
+        console.log(delete_conf_id);
+        $.ajax( {
+                method: 'DELETE',
+                url: `/dashboard/api/quiz/delete/${delete_conf_id}`,
+                success:function(data)
+                    {
+                        if(data.success)
+                            {  $(`#${quiztobedeleted_id}`).remove();
+                               toastr.success(data.msg);
+                            
+                            }
+                        else{
+                            toastr.error( data.error );
+                        }
+                    }
+            });
+        
+    });
+    //Editing Quiz operation
+   
+   
+   
+   
+   
+    $(document).on('click','e',function()
+    {
+            var id_to_edit=$(this).next().attr('id');
+            console.log(id_to_edit);
+            $.ajax( {
+                method: 'GET',
+                url: `/dashboard/api/quiz/myquizzes/${id_to_edit}`,
+                success:function(data)
+                {
+                    if(data.success)
+                    {
+                        console.log(data);
+                    }
+                    else{
+                        toastr.error( data.error );
+                    }
+                }
+
+    });
+                                
 });
 
+});

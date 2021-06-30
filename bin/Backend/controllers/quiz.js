@@ -200,9 +200,11 @@ module.exports =
             if ( collection.author == req.session.user.userId ) {
                 try {
                     await Quiz.deleteOne( {_id: req.params.quizCode} );
+                    await User.updateOne({_id:collection.author},{$pull: {quizzesAuthored: {quizCode:req.params.quizCode}}});
                     return res.json( {success: true, msg: "Quiz has been deleted"} );
                 }
                 catch ( err ) {
+                    console.log(err);
                     return res.json( {success: false, error: "Unable to delete Quiz"} );
                 }
             }

@@ -9,7 +9,7 @@ router.get( '/quiz/leaderboard/:quizCode', quiz.leaderboard );
 router.get( '/quiz/participated/:userId', quiz.getParticipatedQuiz );
 router.get( '/quiz/myquizzes/all/:userId', quiz.getAuthoredQuizDetails );
 router.get( '/quiz/myquizzes/:quizCode', quiz.getAuthoredQuiz );
-router.patch( '/quiz/update', quiz.validate, quiz.updateQuiz );
+router.patch( '/quiz/update/:quizCode', quiz.validate, quiz.updateQuiz );
 router.delete( '/quiz/delete/:quizCode', quiz.deleteQuiz );
 
 module.exports = router;

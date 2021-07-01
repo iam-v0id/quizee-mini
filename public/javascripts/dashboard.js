@@ -462,7 +462,8 @@ $( document ).ready( function ()
                                toastr.success(data.msg);
                             
                             }
-                        else{
+                        else
+                        {
                             toastr.error( data.error );
                         }
                     }
@@ -473,11 +474,11 @@ $( document ).ready( function ()
    
    
    
-   
-   
+    var quescnt;
+    var id_to_edit;
     $(document).on('click','e',function()
     {
-            var id_to_edit=$(this).next().attr('id');
+            id_to_edit=$(this).next().attr('id');
             console.log(id_to_edit);
             $.ajax( {
                 method: 'GET',
@@ -486,15 +487,246 @@ $( document ).ready( function ()
                 {
                     if(data.success)
                     {
-                        console.log(data);
+                        console.log(data.quiz);
+                        var upd_quizname=data.quiz.quizName;
+                        var upd_quizdur=data.quiz.quizDuration;
+                        var name_dur=`<div class="form-group" id="upd-qnamediv">
+                        <label for="quizname" class="form-label mt-4">Quiz Name</label>
+                        <input type="text" class="form-control" id="upd-qname" aria-describedby="emailHelp" value="${upd_quizname}"
+                          placeholder="Enter Quiz Name">
+                      </div>
+                      <div class="form-group" id="upd-qdur">
+                        <label for="quizname" class="form-label mt-4">Quiz Duration</label>
+                        <input type="number" value="${upd_quizdur}" min="0" step="5" class="form-control" id="upd-qduration"
+                          aria-describedby="emailHelp" placeholder="Enter Quiz Duration">
+                      </div>`;
+                        $("#update-forminner").html(name_dur);
+                        var upd_quesrray=data.quiz.questions;
+                        console.log(upd_quesrray);
+                        for(var q_no=0;q_no<upd_quesrray.length;q_no++)
+                            {  var qi=q_no+1;
+                                 var q_desc=upd_quesrray[q_no].description;
+                                var q_ans=upd_quesrray[q_no].correctAnswer;
+                                var opt_array=upd_quesrray[q_no].options;
+                                var rec_ques=document.createElement('div');
+                                rec_ques.innerHTML=`<div id="upd-${qi}">
+                                <div class="form-group">
+                                  <label for="upd-question${qi}" class="form-label mt-4">Question ${qi}</label>
+                                  <input id="upd-question${qi}" type="text" class="form-control" aria-describedby="emailHelp" value="${q_desc}"
+                                    placeholder="Enter Question">
+                                </div>
+                                <div class="form-group">
+                                  <label for="quizname" class="form-label mt-4">Options</label>
+                                  <input type="text" class="form-control" id="upd-${qi}opt1" aria-describedby="emailHelp" value="${opt_array[0]}"
+                                    placeholder="Enter Option 1">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                  <input type="text" class="form-control" id="upd-${qi}opt2" aria-describedby="emailHelp" value="${opt_array[1]}"
+                                    placeholder="Enter Option 2">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                  <input type="text" class="form-control" id="upd-${qi}opt3" aria-describedby="emailHelp" value="${opt_array[2]}"
+                                    placeholder="Enter Option 3">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                  <input type="text" class="form-control" id="upd-${qi}opt4" aria-describedby="emailHelp" value="${opt_array[3]}"
+                                    placeholder="Enter Option 4">
+                                </div>
+                                <div class="form-group">
+                                  <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
+                                  <select class="form-select" id="${qi}-upd-crctoption">
+                                    <option selected>${q_ans}</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                                </div>
+                
+                                <hr>
+                              </div>`;
+                              document.getElementById( 'update-forminner' ).appendChild(rec_ques);
+                            }
+
+                            quescnt=qi;
+                        $("#myquiz-heading").hide();
+                        $("#myquizzes-list").hide();
+                         $("#update-quizform").show();
+                         $("#upd-terminals").show();
                     }
                     else{
                         toastr.error( data.error );
                     }
                 }
 
-    });
+                });
                                 
-});
+         });
+
+         $( '#upd-addquestion' ).click( function ()
+         {
+
+            quescnt++;
+            var upd_add = document.createElement( 'div' ); // is a node
+            upd_add.innerHTML = `<div id="upd-${quescnt}">
+                                <div class="form-group">
+                                <label for="upd-question${quescnt}" class="form-label mt-4">Question ${quescnt}</label>
+                                <input id="upd-question${quescnt}" type="text" class="form-control" aria-describedby="emailHelp" 
+                                    placeholder="Enter Question">
+                                </div>
+                                <div class="form-group">
+                                <label for="quizname" class="form-label mt-4">Options</label>
+                                <input type="text" class="form-control" id="upd-${quescnt}opt1" aria-describedby="emailHelp" 
+                                    placeholder="Enter Option 1">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                <input type="text" class="form-control" id="upd-${quescnt}opt2" aria-describedby="emailHelp" 
+                                    placeholder="Enter Option 2">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                <input type="text" class="form-control" id="upd-${quescnt}opt3" aria-describedby="emailHelp" 
+                                    placeholder="Enter Option 3">
+                                </div>
+                                <div class="form-group">&nbsp;
+                                <input type="text" class="form-control" id="upd-${quescnt}opt4" aria-describedby="emailHelp" 
+                                    placeholder="Enter Option 4">
+                                </div>
+                                <div class="form-group">
+                                <label for="crctoption" class="form-label mt-4">Select the Correct Option</label>
+                                <select class="form-select" id="${quescnt}-upd-crctoption">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                                </div>
+
+                                <hr>
+                            </div>`;
+            
+            document.getElementById( 'update-forminner' ).appendChild( upd_add );
+         } );
+
+         $( '#upd-deletequestion' ).click( function ()
+            {
+
+                $( `#upd-${quescnt}` ).remove()
+                quescnt--;
+            } );
+
+        $( '#upd-clearquiz' ).click( function ()
+        {
+    
+            $("#update-forminner").html('');
+            $("#update-quizform").hide();
+        } );
+
+        $("#upd-submitquestion").click(function(){
+        var quizName = $( "#upd-qname" ).val();
+        var quizDuration = parseInt( $( "#upd-qduration" ).val());
+        var author = userObject.getCurrentUserId();
+        var questions = [];
+        console.log( quescnt );
+        for ( var i = 1; i <= quescnt; i++ )
+        {       //var quesobj={description:'',options:[],correctAnswer:0};
+            var description = $( `#upd-question${i}` ).val();
+            var correctAnswer = parseInt( $( `#${i}-upd-crctoption` ).val() );
+            //console.log(quesobj.correctAnswer);
+            var opt = [];
+            for ( var j = 1; j <= 4; j++ )
+            {
+                var optval = $( `#upd-${i}opt${j}` ).val();
+                opt.push( optval );
+            }
+            var quesobj = {description: description, correctAnswer: correctAnswer, options: opt};
+            //quesobj.options=opt;
+            questions.push( quesobj );
+        }
+        var quizobj = {quizName: quizName, quizDuration: quizDuration, author: author, questions: JSON.stringify( questions )};
+        //quizobj.questions=questions;  
+        console.log( quizobj );
+
+        $.ajax( {
+            type: "PATCH",
+            url: `/dashboard/api/quiz/update/${id_to_edit}`,
+            data: quizobj,
+            success: function ( data )
+            {
+                if ( data.success )
+                {  
+                     $("#update-quizform").hide()
+                    $("#upd-terminals").hide();
+                    $("#myquizzes-list").html('');
+                    toastr.success(data.msg);
+                    var quizzesconductedId=userObject.getCurrentUserId();
+                    $.ajax( {
+                        method: 'GET',
+                        url: `/dashboard/api/quiz/myquizzes/all/${quizzesconductedId}`,
+                        success:function(data)
+                            {
+                                if(data.success)
+                                {
+                                        console.log("conducted list has come");
+                                        var q_conductedarray=data.quizDetails;
+                                    
+                                        console.log("quizzes received");
+                                        console.log(q_conductedarray);
+                                        for(var qz=0;qz<q_conductedarray.length; qz++)
+                                        {
+                                                var qid=qz+1;
+                                                //console.log()
+                                                var quizconducted = document.createElement( 'div' );
+                                                quizconducted.classList.add("col");
+                                                quizconducted.classList.add("span_1_of_3");
+                                                quizconducted.innerHTML =`
+                                                <div class="card  border-primary bg-light mb-3"  style="max-width: 23rem;" id="${qid}-quizconducted">
+                                                <div class="card-header">Quiz Code: ${q_conductedarray[qz]._id}</div>
+                                                <div class="card-body"  >
+                                                <h4 class="card-title">${q_conductedarray[qz].quizName}</h4>
+                                                <p class="card-text" >Number of Questions: ${q_conductedarray[qz].question_count}</p>
+                                                <p class="card-text" >Users participated: ${q_conductedarray[qz].usersParticipated}</p>
+                                                <p class="card-text" >Duration: ${q_conductedarray[qz].quizDuration} min</p>
+                                                    <div class="d-flex justify-content-between" id="${qid}-buttonblock">
+                                                        <e id="edit-button-${qid}"><button type="button" class="btn btn-info" >Edit</button></e>
+                                                        <d id="${q_conductedarray[qz]._id}"><button type="button" class="btn btn-danger">Delete</button></d>
+                                                        <div id="asking-deletion-${qid}" style="display:none;">
+                                                            <b id="del-cancel-${qid}"><button type="button" class="btn btn-info" >Cancel</button> </b>&emsp;
+                                                            <cd id="del-confirm-${qid}"><button type="button" class="btn btn-danger" >Confirm</button></cb>
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                </div>
+                                            </div>`
+                                            document.getElementById( 'myquizzes-list' ).appendChild( quizconducted );
+                                        }
+                                    $("#myquizzes-list").show();
+                                }
+                                else{
+                                    toastr.error( data.error );
+                                }
+                            }
+                    
+                            });
+                
+                
+                
+                }
+
+                else
+                  {  
+                    $("#update-quizform").hide();
+                    $("#upd-terminals").hide();
+                    $("#myquiz-heading").show();
+                    $("#myquizzes-list").show();
+                    toastr.error( data.error ); 
+                  }
+            },
+        });
+        
+    
+    });
+
+
 
 });

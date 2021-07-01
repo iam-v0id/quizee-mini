@@ -5,13 +5,14 @@ const async = require( "async" );
 
 
 function getQuizDetails( collection, cb ) {
-
+    console.log(collection);
     var quizDetails = [];
     async.eachSeries( collection, ( quiz, next ) => {
         Quiz.findById( quiz.quizCode, ( err, quizobj ) => {
             if ( err )
                 return res.json( {success: false, error: "Unable to fetch quiz details"} );
             else {
+                console.log(quizobj);
                 User.findById( quizobj.author, function ( err, user ) {
                     if ( err )
                         return res.json( {success: false, error: "Unable to fetch quiz details"} );
@@ -154,18 +155,12 @@ module.exports =
     getAuthoredQuiz: async ( req, res ) => {
 
         try {
-            let collection = await Quiz.findById( req.params.quizCode, {author: 1} );
+            let collection = await Quiz.findById( req.params.quizCode );
             if ( collection.author == req.session.user.userId ) {
-                try {
-                    let quiz = await User.findById( req.params.quizCode, {} );
-                    return res.json( {success: true, quiz: quiz} );
-                }
-                catch ( err ) {
-                    return res.json( {success: false, error: "Unable to fetch Authored quizzes"} );
-                }
+                return res.json( {success: true, quiz: collection} );
             }
             else
-                return res.json( {success: false, msg: "You are Not Authorized"} );
+                return res.json( {success: false, error: "You are Not Authorized"} );
         }
         catch ( err ) {
             return res.json( {success: false, error: "Unable to verify your Identity"} );
@@ -173,13 +168,14 @@ module.exports =
     },
 
     updateQuiz: async ( req, res ) => {
-        req.body.update.questions = eval( req.body.update.questions );
+        console.log(req.body);
+        req.body.questions = eval( req.body.questions );
 
         try {
-            let collection = await Quiz.findById( req.body.quizCode, {author: 1} );
+            let collection = await Quiz.findById( req.params.quizCode, {author: 1} );
             if ( collection.author == req.session.user.userId ) {
                 try {
-                    await Quiz.updateOne( {_id: req.body.quizCode}, {$set: req.body.update} );
+                    await Quiz.updateOne( {_id: req.params.quizCode}, {$set: req.body} );
                     return res.json( {success: true, msg: "Quiz updated successfully"} );
                 }
                 catch ( err ) {
@@ -187,7 +183,7 @@ module.exports =
                 }
             }
             else
-                return res.json( {success: false, msg: "You are Not Authorized"} );
+                return res.json( {success: false, error: "You are Not Authorized"} );
         }
         catch ( err ) {
             return res.json( {success: false, error: "Unable to verify your Identity"} );
@@ -240,4 +236,5 @@ module.exports =
         }
         next();
     }
+
 }

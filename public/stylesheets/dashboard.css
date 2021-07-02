@@ -45,10 +45,6 @@ a:link {
     text-decoration:underline;
     cursor:pointer;
 }
-button {
-    // Remove focus around button
-    outline:none;  
-}
 /* .manuallyset{
 	background-color:steelblue;
 } */

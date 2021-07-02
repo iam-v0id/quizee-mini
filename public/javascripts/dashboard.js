@@ -642,7 +642,7 @@ $( document ).ready( function ()
             //quesobj.options=opt;
             questions.push( quesobj );
         }
-        var quizobj = {quizName: quizName, quizDuration: quizDuration, author: author, questions: JSON.stringify( questions )};
+        var quizobj = {quizName: quizName, quizDuration: quizDuration, usersParticipated: [], questions: JSON.stringify( questions )};
         //quizobj.questions=questions;  
         console.log( quizobj );
 

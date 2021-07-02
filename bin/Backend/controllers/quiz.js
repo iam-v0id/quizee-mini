@@ -32,7 +32,6 @@ function getQuizDetails( collection, cb ) {
                         next();
                     }
                 } );
-
             }
         } );
 
@@ -195,7 +194,7 @@ module.exports =
             let collection = await Quiz.findById( req.params.quizCode, {author: 1} );
             if ( collection.author == req.session.user.userId ) {
                 try {
-                    await Quiz.deleteOne( {_id: req.params.quizCode} );
+                    await Quiz.updateOne( {_id: req.params.quizCode},{isDeleted:true} );
                     await User.updateOne({_id:collection.author},{$pull: {quizzesAuthored: {quizCode:req.params.quizCode}}});
                     return res.json( {success: true, msg: "Quiz has been deleted"} );
                 }

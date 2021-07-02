@@ -32,7 +32,7 @@ const QuizSchema = new mongoose.Schema( {
             timeStarted: {type: Number}
         },
     ],
-    // isDeleted: {type: Boolean, default: false}
+    isDeleted: {type: Boolean, default: false}
 }, {timestamps: true} );
 QuizSchema
     .virtual( "quizCode" )

@@ -32,7 +32,8 @@ td,tr {
 	.span_3_of_3, .span_2_of_3, .span_1_of_3 { width: 100%; }
 }
 button {
-    // Remove focus around button
+    
+    border: none;
     outline:none;  
 }
 

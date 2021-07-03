@@ -66,6 +66,8 @@ module.exports =
         var quizCode = req.params.quizCode;
         try {
             let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1}} );
+            if(quiz.isDeleted)
+                return res.json( {success: false, error: "Quiz has been Deleted by the Author"} );
             for ( userobj of quiz.usersParticipated )
                 if ( userobj.userId == req.session.user.userId ) {
                     console.log( "Already have" );

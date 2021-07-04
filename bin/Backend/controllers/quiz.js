@@ -65,7 +65,7 @@ module.exports =
     getQuiz: async ( req, res ) => {
         var quizCode = req.params.quizCode;
         try {
-            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1}} );
+            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1},isDeleted:1} );
             if(quiz.isDeleted)
                 return res.json( {success: false, error: "Quiz has been Deleted by the Author"} );
             for ( userobj of quiz.usersParticipated )
@@ -229,8 +229,10 @@ module.exports =
         // validate options and correctAnswer
         for ( let i = 0; i < quiz.questions.length; i++ ) {
             let s = new Set( quiz.questions[i].options );
+            if(s.has(''))
+                return res.json( {success: false, error: 'Options cannot be Empty!'} );
             if ( s.size != 4 )
-                return res.json( {success: false, error: "Options must be Unique in Question No. " + ( i + 1 )} );
+                return res.json( {success: false, error: 'Options must be Unique in Question No. ' + ( i + 1 )} );
             quiz.questions[i].correctAnswer = parseInt( quiz.questions[i].correctAnswer );
             if ( isNaN( quiz.questions[i].correctAnswer ) || quiz.questions[i].correctAnswer <= 0 || quiz.questions[i].correctAnswer > 4 )
                 return res.json( {success: false, error: 'Correct Answer must lie between 1 and 4'} );

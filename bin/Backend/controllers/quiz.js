@@ -5,14 +5,12 @@ const async = require( "async" );
 
 
 function getQuizDetails( collection, cb ) {
-    console.log(collection);
     var quizDetails = [];
     async.eachSeries( collection, ( quiz, next ) => {
         Quiz.findById( quiz.quizCode, ( err, quizobj ) => {
             if ( err )
                 return res.json( {success: false, error: "Unable to fetch quiz details"} );
             else {
-                console.log(quizobj);
                 User.findById( quizobj.author, function ( err, user ) {
                     if ( err )
                         return res.json( {success: false, error: "Unable to fetch quiz details"} );
@@ -27,7 +25,6 @@ function getQuizDetails( collection, cb ) {
                             author_email: user.email,
                             question_count: quizobj.questions.length
                         };
-                        console.log( obj );
                         quizDetails.push( obj );
                         next();
                     }
@@ -65,12 +62,11 @@ module.exports =
     getQuiz: async ( req, res ) => {
         var quizCode = req.params.quizCode;
         try {
-            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1},isDeleted:1} );
-            if(quiz.isDeleted)
+            let quiz = await Quiz.findById( quizCode, {quizName: 1, author: 1, quizDuration: 1, questions: {options: 1, description: 1}, usersParticipated: {userId: 1}, isDeleted: 1} );
+            if ( quiz.isDeleted )
                 return res.json( {success: false, error: "Quiz has been Deleted by the Author"} );
             for ( userobj of quiz.usersParticipated )
                 if ( userobj.userId == req.session.user.userId ) {
-                    console.log( "Already have" );
                     return res.json( {success: false, error: "Already Attempted"} );
                 }
             return res.json( {success: true, quiz: quiz} );
@@ -169,7 +165,6 @@ module.exports =
     },
 
     updateQuiz: async ( req, res ) => {
-        console.log(req.body);
         req.body.questions = eval( req.body.questions );
 
         try {
@@ -196,12 +191,11 @@ module.exports =
             let collection = await Quiz.findById( req.params.quizCode, {author: 1} );
             if ( collection.author == req.session.user.userId ) {
                 try {
-                    await Quiz.updateOne( {_id: req.params.quizCode},{isDeleted:true} );
-                    await User.updateOne({_id:collection.author},{$pull: {quizzesAuthored: {quizCode:req.params.quizCode}}});
+                    await Quiz.updateOne( {_id: req.params.quizCode}, {isDeleted: true} );
+                    await User.updateOne( {_id: collection.author}, {$pull: {quizzesAuthored: {quizCode: req.params.quizCode}}} );
                     return res.json( {success: true, msg: "Quiz has been deleted"} );
                 }
                 catch ( err ) {
-                    console.log(err);
                     return res.json( {success: false, error: "Unable to delete Quiz"} );
                 }
             }
@@ -220,16 +214,22 @@ module.exports =
             quiz = req.body;
         quiz.questions = eval( quiz.questions );
 
+        // validate quizName
+        if ( quiz.quizName == '' )
+            return res.json( {success: false, error: 'Quiz Name cannot be Empty!'} );
+
+
         // validate quizDuration
         quiz.quizDuration = parseInt( quiz.quizDuration );
-        console.log( quiz.quizDuration );
         if ( isNaN( quiz.quizDuration ) || quiz.quizDuration <= 0 )
             return res.json( {success: false, error: 'Quiz Duration must be a Positive Integer'} );
 
         // validate options and correctAnswer
         for ( let i = 0; i < quiz.questions.length; i++ ) {
+            if ( quiz.questions[i].description == '' )
+                return res.json( {success: false, error: `Question ${i + 1} cannot be Empty!`} );
             let s = new Set( quiz.questions[i].options );
-            if(s.has(''))
+            if ( s.has( '' ) )
                 return res.json( {success: false, error: 'Options cannot be Empty!'} );
             if ( s.size != 4 )
                 return res.json( {success: false, error: 'Options must be Unique in Question No. ' + ( i + 1 )} );

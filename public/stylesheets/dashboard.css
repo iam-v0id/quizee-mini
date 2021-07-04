@@ -42,10 +42,10 @@ a:link {
 	text-decoration:none;
  }
  a:hover {
-    color:white;
     text-decoration:underline;
     cursor:pointer;
 }
-/* .manuallyset{
-	background-color:steelblue;
-} */
+
+cpy{
+	cursor:pointer;
+}

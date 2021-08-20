@@ -37,7 +37,7 @@ const userObject = {
     },
     isUserLoggedIn: function ()
     {
-        if ( this.getCurrentUser() == null )
+        if ( this.getCurrentUser() === null )
             return false;
         return true;
     }

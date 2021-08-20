@@ -1,4 +1,6 @@
 import userObject from './ls.js';
+var isFullscreen=false;
+var elem='';
 
 $( document ).ready( function () {
     $( '#Logoutbtn' ).click( function () {
@@ -10,13 +12,14 @@ $( document ).ready( function () {
         } );
         location.href = "/";
     } );
-
+    $("#app").hide();//timer id hiding
 
     var createquiz = false
     var cnt = 1
     var quizlength = 0
     var quiz_Code = ''
-
+    
+    
     // Author Tab
 
     $( '#createquiz' ).click( function () {
@@ -131,9 +134,17 @@ $( document ).ready( function () {
 
     // Participate Tab
 
-    $( '#participatequiz' ).click( function () {
-        //var quizidobj={quizid:''};
-        //console.log("pressed");
+                    $( '#participatequiz' ).click( function ()
+                    {
+                      $("#q-name").hide();
+                      $("#participatequiz").hide();
+                      $("#inst-block").show();
+                    });
+
+     $("#start-quiz").click(function(){
+        $("#inst-block").hide();
+        $( "#q-name" ).hide();
+        
         var quizCode = $( "#quizid" ).val();
         //console.log(quizCode);  
         //$("#quizsubmitform").html('');
@@ -146,6 +157,9 @@ $( document ).ready( function () {
                     console.log( data.quiz );
                     console.log( data.quiz.quizName );
                     //console.log(data.quiz.questions.length);
+                    $("#app").show();
+                    var duration=data.quiz.quizDuration;
+                    timer(duration);
                     quizlength = data.quiz.questions.length;
                     quiz_Code = data.quiz._id;
                     $( "#quiztitle" ).html( data.quiz.quizName );
@@ -157,7 +171,7 @@ $( document ).ready( function () {
                         var quizques = document.createElement( 'div' );
                         $( quizques ).attr( 'style', 'padding-left : 8%' );
                         quizques.innerHTML = `
-                                        <div class="card border-primary mb-3" style="max-width: 90%;" id="${c}-set">
+                                        <div class="card border-primary mb-3" style="max-width: 80%;" id="${c}-set">
                                         <div class="card-header" id="${c}-dispquestion">${c}Q)  ${quesattempting}</div>
                                         <div class="card-body">
                                         <div class="form-check">
@@ -189,11 +203,13 @@ $( document ).ready( function () {
 
                         document.getElementById( 'quizsubmitform' ).appendChild( quizques );
                     }
+                //full screen functionality
                     $( "#quizsubmitform" ).show();
                     $( "#submitquizbutton" ).show();
-                    $( "#q-name" ).hide();
-
                     $( "#participatequiz" ).hide();
+                    elem=document.getElementById("full-screen");    
+                    openFullscreen(elem);
+                    $("#full-screen").show();
 
                 }
                 else
@@ -206,7 +222,7 @@ $( document ).ready( function () {
 
     $( "#submitquizbutton" ).click( function () {
         //$("#participatequiz").hide();
-
+        $("#app").hide();
         var responses = [];
         //console.log(quizlength);
         for ( var y = 1; y <= quizlength; y++ ) {
@@ -227,6 +243,8 @@ $( document ).ready( function () {
                 if ( data.success ) {
                     console.log( data.marks );
                     toastr.success( "Quiz Submitted Sucessfully " );
+                    exitFullscreen();
+                    isFullscreen=false;
                     $( "#marks" ).html( data.marks );
                     $( "#marks_declaration" ).show();
                     $( "#marksokbutton" ).show();
@@ -259,8 +277,9 @@ $( document ).ready( function () {
         $( "#quizid" ).val( '' );
         $( "#participatequiz" ).show();
         $( "#marks" ).html( '' );
-        $( "#marks_declaration" ).html( '' );
         $( "#marksokbutton" ).hide();
+        $( "#marks_declaration" ).hide();
+       
 
     } );
 
@@ -268,6 +287,7 @@ $( document ).ready( function () {
 
 
     $( "#leaderboard-tab" ).click( function () {
+        $("#quizparticipatedlist").html('');
         var quizzesParticipatedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -286,7 +306,7 @@ $( document ).ready( function () {
                         quizofuser.classList.add( "col" );
                         quizofuser.classList.add( "span_1_of_3" );
                         quizofuser.innerHTML = `
-                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 21rem;" >
+                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 23rem;" >
                                     <div class="card-header">Quiz Code : <cpy data-bs-toggle="tooltip" data-bs-placement="top" title="Copy">${qarray[qz]._id}</cpy></div>
                                     <div class="card-body"  >
                                       <h4 class="card-title">${qarray[qz].quizName}</h4>
@@ -322,20 +342,21 @@ $( document ).ready( function () {
     } );
 
     //on shifting to other tabs
-    $( "#home-tab" ).click( function () {
-        $( "#quizparticipatedlist" ).html( '' );
-    } );
-    $( "#profile-tab" ).click( function () {
-        $( "#quizparticipatedlist" ).html( '' );
-    } );
-    $( "#myquizzes-tab" ).click( function () {
-        $( "#quizparticipatedlist" ).html( '' );
-    } );
+    // $( "#home-tab" ).click( function () {
+    //     $( "#quizparticipatedlist" ).html( '' );
+    // } );
+    // $( "#profile-tab" ).click( function () {
+    //     $( "#quizparticipatedlist" ).html( '' );
+    // } );
+    // $( "#myquizzes-tab" ).click( function () {
+    //     $( "#quizparticipatedlist" ).html( '' );
+    // } );
 
     //my quizzes  tab designing
 
 
-    $( "#myquizzes-tab" ).click( function () {
+    var myquizzesdisplay=function(){
+        $("#myquizzes-list").html('');
         var quizzesconductedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -355,7 +376,7 @@ $( document ).ready( function () {
                         quizconducted.classList.add( "col" );
                         quizconducted.classList.add( "span_1_of_3" );
                         quizconducted.innerHTML = `
-                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 23rem;" id="${qid}-quizconducted">
+                                    <div class="card  border-primary bg-light mb-3"  style="max-width: 22rem;" id="${qid}-quizconducted">
                                     <div class="card-header">Quiz Code: <cpy data-bs-toggle="tooltip" data-bs-placement="top" title="Copy">${q_conductedarray[qz]._id}</cpy></div>
                                     <div class="card-body"  >
                                       <h4 class="card-title">${q_conductedarray[qz].quizName}</h4>
@@ -386,26 +407,30 @@ $( document ).ready( function () {
         } );
 
 
-    } );
+    }
+    
+    $("#myquizzes-tab").click(function(){
+        myquizzesdisplay();                 //on clicking my quizes tab
+    });
 
-    $( "#home-tab" ).click( function () {
-        $( "#myquizzes-list" ).html( '' );
-    } );
-    $( "#profile-tab" ).click( function () {
-        $( "#myquizzes-list" ).html( '' );
-    } );
-    $( "#leaderboard-tab" ).click( function () {
-        $( "#myquizzes-list" ).html( '' );
-    } );
+    // $( "#home-tab" ).click( function () {
+    //     $( "#myquizzes-list" ).html( '' );
+    // } );
+    // $( "#profile-tab" ).click( function () {
+    //     $( "#myquizzes-list" ).html( '' );
+    // } );
+    // $( "#leaderboard-tab" ).click( function () {
+    //     $( "#myquizzes-list" ).html( '' );
+    // } );
 
     // Deleting Quiz operation
     $( document ).on( 'click', 'd', function () {
         var testid = $( this ).attr( 'id' );
         console.log( testid );
-
+        $( `#${testid}` ).hide();
         var edit_block = $( this ).next().attr( 'id' );
         console.log( edit_block );
-        $( `#${testid}` ).hide();
+        
         $( `#${edit_block}` ).show();
 
     } );
@@ -578,16 +603,19 @@ $( document ).ready( function () {
         quescnt--;
     } );
 
-    $( '#upd-clearquiz' ).click( function () {
-
-        $( "#update-forminner" ).html( '' );
-        $( "#update-quizform" ).hide();
-    } );
+    $( '#upd-clearquiz' ).click( function ()
+        {
+    
+            $("#update-forminner").html('');
+            $("#update-quizform").hide();
+            $("#myquizzes-list").html('');
+            myquizzesdisplay();
+        } );
 
     $( "#upd-submitquestion" ).click( function () {
         var quizName = $( "#upd-qname" ).val();
         var quizDuration = parseInt( $( "#upd-qduration" ).val() );
-        var author = userObject.getCurrentUserId();
+        //var author = userObject.getCurrentUserId();
         var questions = [];
         console.log( quescnt );
         for ( var i = 1; i <= quescnt; i++ ) {       //var quesobj={description:'',options:[],correctAnswer:0};
@@ -689,5 +717,210 @@ $( document ).ready( function () {
         document.execCommand( "copy" );
         $temp.remove();
     } );
+   
+    // $(document).on('keypress',function(e){
+    //     console.log("not allowing other keys");
+    //     console.log(isFullscreen);
+    //     console.log(e.key);
+    //     if(e.key === "Escape") {
+    //             if(isFullscreen){
+    //                 console.log("not allowing other keys in if condition");
+    //                 openFullscreen(elem);
+    //             }
+    //                              }
+    // });
 
+    // // $(document).on('keydown', function(event) {
+    // //       if (event.key == "Escape") {
+    // //           alert('Esc key pressed.');
+    // //       }
+    // //   });
+
+    async function wait( ms )
+        {
+        return new Promise( resolve =>
+        {   
+            setTimeout( resolve, ms );
+        } );
+        }
+
+      document.addEventListener('fullscreenchange', async() =>
+            {
+                var full_screen_element = document.fullscreenElement;
+            
+                if(full_screen_element !== null)
+                    {  
+                        console.log('Page has entered fullscreen mode');
+
+                    }
+                else
+                {       console.log('Page has exited fullscreen mode');
+                        $("#redirect-to-quiz").show();
+                        //alert('go to full screen in 10 seconds');
+                        toastr.error('Go to Full-Screen ASAP');
+                        isFullscreen=false;
+                        await wait(10000);
+                        console.log('10 sec done');
+                        if (!isFullscreen)
+                       { $('#submitquizbutton').trigger('click');
+                        $("#redirect-to-quiz").hide();
+                       }
+                }   
+            });
+
+        $("#redirect-to-quiz").click(function(){
+            
+            $("#redirect-to-quiz").hide();    
+            openFullscreen(elem);
+        });
+
+        
 } );
+// full screen functionality
+
+function openFullscreen(elem) {
+                    isFullscreen=true
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Safari */
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE11 */
+                        elem.msRequestFullscreen();
+                    }
+                    else if (elem.mozRequestFullScreen) {
+                        elem.mozRequestFullScreen();
+                    }
+                }
+function exitFullscreen() {
+                console.log('exit call received');
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }  else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+           }
+//timer code 
+var timer = function(duration){
+    const TIME_LIMIT = 60*duration; // Give time here
+    const FULL_DASH_ARRAY = 283;
+    const WARNING_THRESHOLD = 0.40*TIME_LIMIT;
+    const ALERT_THRESHOLD = 0.15*TIME_LIMIT;
+    
+    const COLOR_CODES = {
+      info: {
+        color: "green"
+      },
+      warning: {
+        color: "orange",
+        threshold: WARNING_THRESHOLD
+      },
+      alert: {
+        color: "red",
+        threshold: ALERT_THRESHOLD
+      }
+    };
+    
+    let timePassed = 0;
+    let timeLeft = TIME_LIMIT;
+    let timerInterval = null;
+    let remainingPathColor = COLOR_CODES.info.color;
+    
+    document.getElementById("app").innerHTML = `
+    <div class="base-timer">
+      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="base-timer__circle">
+          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+          <path
+            id="base-timer-path-remaining"
+            stroke-dasharray="283"
+            class="base-timer__path-remaining ${remainingPathColor}"
+            d="
+              M 50, 50
+              m -45, 0
+              a 45,45 0 1,0 90,0
+              a 45,45 0 1,0 -90,0
+            "
+          ></path>
+        </g>
+      </svg>
+      <span id="base-timer-label" class="base-timer__label">${formatTime(
+        timeLeft
+      )}</span>
+    </div>
+    `;
+    
+    startTimer();
+    
+    function onTimesUp() {
+      clearInterval(timerInterval);
+      console.log("time up");
+      
+      
+    }
+    
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+        document.getElementById("base-timer-label").innerHTML = formatTime(
+          timeLeft
+        );
+        setCircleDasharray();
+        setRemainingPathColor(timeLeft);
+    
+        if (timeLeft === 0) {
+          onTimesUp();
+          $('#submitquizbutton').trigger('click');
+          //$("#app").hide();
+        }
+      }, 1000);
+    }
+    
+    function formatTime(time) {
+      const minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+    
+      if (seconds < 10) {
+        seconds = `0${seconds}`;
+      }
+    
+      return `${minutes}:${seconds}`;
+    }
+    
+    function setRemainingPathColor(timeLeft) {
+      const { alert, warning, info } = COLOR_CODES;
+      if (timeLeft <= alert.threshold) {
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.remove(warning.color);
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.add(alert.color);
+      } else if (timeLeft <= warning.threshold) {
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.remove(info.color);
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.add(warning.color);
+      }
+    }
+    
+    function calculateTimeFraction() {
+      const rawTimeFraction = timeLeft / TIME_LIMIT;
+      return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+    }
+    
+    function setCircleDasharray() {
+      const circleDasharray = `${(
+        calculateTimeFraction() * FULL_DASH_ARRAY
+      ).toFixed(0)} 283`;
+      document
+        .getElementById("base-timer-path-remaining")
+        .setAttribute("stroke-dasharray", circleDasharray);
+    }
+    }

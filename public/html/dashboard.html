@@ -10,8 +10,32 @@
     integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../stylesheets/dashboard.css">
+  <link rel="stylesheet" href="../stylesheets/timer.css">
   <title>Dashboard</title>
   <link rel="icon" href="../images/dashboard.png">
+  <!-- scroll bar -->
+  <style>
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+     
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+    }
+    </style>
+
 </head>
 
 <body>
@@ -94,37 +118,43 @@
 
       <!-- Participate Tab -->
       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="form-group d-flex" id="q-name">
+       <div  id="q-name">
+        <div  class="form-group d-flex">
           <input type="text" class="form-control" id="quizid" aria-describedby="emailHelp"
             placeholder="Enter Quiz Code">&nbsp;
           <button id="participatequiz" type="button" class="btn btn-success">Participate</button>
         </div>
+       </div><br>
+       <!-- full screen code -->
+            <div  class="full-screen-scroll"  id="full-screen" >
+                  <div id="timer">        
+                    <div id="app"></div>
+                  </div>
+                  <div>
+                    <h2 id="quiztitle"></h2>
+                    </div><br>
+                  <div id="quizsubmitform" style="display: none;">      </div><br>
+                  <button type="button" class="btn btn-primary" id="submitquizbutton"
+                  style="display: none;margin-left: 8%;">Submit</button>
 
-
-
-        <div id="marks_declaration" style="display: none;">
-          <span>
-            <h1 style="display:inline;">Your Score: </h1>
-            <h1 style="display:inline;" id="marks"></h1>
-          </span>
-        </div>
-
-        <div>
-          <br><button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
-        </div>
-        <br>
-        <div>
-          <h2 id="quiztitle"></h2>
-        </div><br>
-        <div id="quizsubmitform" style="display: none;">
-
-        </div><br><br>
-
-        <button type="button" class="btn btn-primary" id="submitquizbutton"
-          style="display: none;margin-left: 8%;">Submit</button>
+            </div> <br><br> 
+       <div id="inst-block"   style="display: none;">
+        <p>Do not press any other key while attempting the quiz</p>
+        <button id="start-quiz" type="button" class="btn btn-info">Start</button><br><br>
+     </div>
+            <button id="redirect-to-quiz" type="button" class="btn btn-danger" style="display: none;">
+              Go to Fullscreen</button>              
       </div>
 
-
+      <div id="marks_declaration" style="display: none;">
+        <span>
+          <h1 style="display:inline;">Your Score: </h1>
+          <h1 style="display:inline;" id="marks"></h1>
+        </span>
+      </div>
+      <div>
+        <br><button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
+      </div>
 
       <!-- Leaderboard Tab -->
       <div class="tab-pane fade" id="leaderboard" role="tabpanel" aria-labelledby="leaderboard-tab">
@@ -228,6 +258,13 @@
     integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="module" src="../javascripts/dashboard.js  "></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+      </script> -->
+
+<!-- <script src="js/scrollBar.js"></script> -->
+
 </body>
 
 </html>

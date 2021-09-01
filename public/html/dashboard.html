@@ -14,28 +14,7 @@
   <title>Dashboard</title>
   <link rel="icon" href="../images/dashboard.png">
   <!-- scroll bar -->
-  <style>
-    /* width */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    
-    /* Track */
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1; 
-    }
-     
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: #888; 
-    }
-    
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555; 
-    }
-    </style>
-
+ 
 </head>
 
 <body>
@@ -117,7 +96,7 @@
 
 
       <!-- Participate Tab -->
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="display: none;">
        <div  id="q-name">
         <div  class="form-group d-flex">
           <input type="text" class="form-control" id="quizid" aria-describedby="emailHelp"
@@ -138,13 +117,14 @@
                   style="display: none;margin-left: 8%;">Submit</button>
 
             </div> <br><br> 
-       <div id="inst-block"   style="display: none;">
+       <div id="inst-block"   style="display: none;padding-left: 5vw;">
         <p>Do not press any other key while attempting the quiz</p>
+        <p>If you come out of full screen your <b>Quiz</b> will be submitted within <b>10 seconds</b> </p><br>
         <button id="start-quiz" type="button" class="btn btn-info">Start</button><br><br>
      </div>
             <button id="redirect-to-quiz" type="button" class="btn btn-danger" style="display: none;">
               Go to Fullscreen</button>              
-      </div>
+      
 
       <div id="marks_declaration" style="display: none;">
         <span>
@@ -155,28 +135,30 @@
       <div>
         <br><button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
       </div>
-
+    </div>
       <!-- Leaderboard Tab -->
-      <div class="tab-pane fade" id="leaderboard" role="tabpanel" aria-labelledby="leaderboard-tab">
+      <div class="tab-pane fade" id="leaderboard" role="tabpanel" aria-labelledby="leaderboard-tab" style="display: none;">
         <h2 id="quizheading">Quizzes Participated</h2><br>
-        <div style="display: none;" id="quizparticipatedlist" class="section group">
+        <div  id="quizparticipatedlist" class="section group">
 
         </div>
-        <h2 style="display: none;" id="leaderboardheading">Leaderboard</h2>
-        <table class="table table-hover" id="lb-table" style="display: none;">
-          <thead>
-            <tr>
-              <th scope="col">Score</th>
-              <th scope="col">Email</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-            </tr>
-          </thead>
-          <tbody id="lb-table-body">
+            <div id="leaderboard-block" style="display: none;">
+                <h2 id="leaderboardheading">Leaderboard</h2>
+                <table class="table table-hover" id="lb-table" >
+                  <thead>
+                    <tr>
+                      <th scope="col">Score</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lb-table-body">
 
-          </tbody>
-        </table><br><br>
-        <button type="button" class="btn btn-primary" id="lb-okbutton" style="display: none;">Back</button>
+                  </tbody>
+                </table><br><br>
+                <button type="button" class="btn btn-primary" id="lb-okbutton" >Back</button>
+          </div>
 
       </div>
 
@@ -218,6 +200,7 @@
         url: `/dashboard/api/quiz/leaderboard/${reqid}`,
         success: function ( data ) {
           if ( data.success ) {
+            $( "#lb-table-body" ).html( '' );
             var lb_array = data.leaderboard;
             lb_array.sort( function ( a, b ) {
               return b.marks - a.marks;
@@ -236,9 +219,7 @@
 
             $( "#quizheading" ).hide();
             $( "#quizparticipatedlist" ).hide();
-            $( "#leaderboardheading" ).show();
-            $( "#lb-table" ).show();
-            $( "#lb-okbutton" ).show();
+            $("#leaderboard-block").show();
           }
           else {
             toastr.error( err );

@@ -286,8 +286,8 @@ $( document ).ready( function () {
     //Leader Board Tab
 
 
-    $( "#leaderboard-tab" ).click( function () {
-        $("#quizparticipatedlist").html('');
+    var leaderboard_functionality= function () {
+        
         var quizzesParticipatedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -299,7 +299,7 @@ $( document ).ready( function () {
 
                     console.log( "quizzes received" );
                     console.log( qarray );
-                    for ( var qz = 0; qz < qarray.length; qz++ ) {
+                    for ( var qz = qarray.length-1; qz >=0 ; qz-- ) {
                         var qid = qz + 1;
                         //console.log()
                         var quizofuser = document.createElement( 'div' );
@@ -319,7 +319,9 @@ $( document ).ready( function () {
                                   </div>`
                         document.getElementById( 'quizparticipatedlist' ).appendChild( quizofuser );
                     }
-                    $( "#quizparticipatedlist" ).show();
+                    $("#quizheading").show();
+                    $("#quizparticipatedlist").show();
+                    
                 }
                 else {
                     toastr.error( data.error );
@@ -328,32 +330,42 @@ $( document ).ready( function () {
 
         } );
 
-    } );
+    } ;
 
     //clicking ok after viewing leader board            
 
     $( "#lb-okbutton" ).click( function () {
-        $( "#lb-table-body" ).html( '' );
-        $( "#leaderboardheading" ).hide();
-        $( "#lb-table" ).hide();
-        $( "#lb-okbutton" ).hide();
+        $("#leaderboard-block").hide();
         $( "#quizheading" ).show();
         $( "#quizparticipatedlist" ).show();
     } );
 
     //on shifting to other tabs
-    // $( "#home-tab" ).click( function () {
-    //     $( "#quizparticipatedlist" ).html( '' );
-    // } );
-    // $( "#profile-tab" ).click( function () {
-    //     $( "#quizparticipatedlist" ).html( '' );
-    // } );
-    // $( "#myquizzes-tab" ).click( function () {
-    //     $( "#quizparticipatedlist" ).html( '' );
-    // } );
+    $( "#home-tab" ).click( function () {
+        $("#leaderboard").hide();
+        $("#profile").hide();
+    } );
+    $( "#profile-tab" ).click( function () {
+        $("#leaderboard").hide();
+        $("#profile").show();
+    } );
+    $( "#leaderboard-tab" ).click( function () {
+        $("#leaderboard-block").hide();
+        $("#leaderboard").show();
+        $("#quizparticipatedlist").html('');
+        leaderboard_functionality();
+        $("#profile").hide();
+    });
+    //on clicking my quizzes tab
+    $("#myquizzes-tab").click(function(){
+        myquizzesdisplay();
+        $("#leaderboard").hide();
+        $( "#lb-table-body" ).html( '' );
+        $("#profile").hide();
+                        
+    });
 
     //my quizzes  tab designing
-
 
     var myquizzesdisplay=function(){
         $("#myquizzes-list").html('');
@@ -369,7 +381,7 @@ $( document ).ready( function () {
 
                     console.log( "quizzes received" );
                     console.log( q_conductedarray );
-                    for ( var qz = 0; qz < q_conductedarray.length; qz++ ) {
+                    for ( var qz = q_conductedarray.length-1; qz >=0 ; qz-- ) {
                         var qid = qz + 1;
                         //console.log()
                         var quizconducted = document.createElement( 'div' );
@@ -409,20 +421,8 @@ $( document ).ready( function () {
 
     }
     
-    $("#myquizzes-tab").click(function(){
-        myquizzesdisplay();                 //on clicking my quizes tab
-    });
-
-    // $( "#home-tab" ).click( function () {
-    //     $( "#myquizzes-list" ).html( '' );
-    // } );
-    // $( "#profile-tab" ).click( function () {
-    //     $( "#myquizzes-list" ).html( '' );
-    // } );
-    // $( "#leaderboard-tab" ).click( function () {
-    //     $( "#myquizzes-list" ).html( '' );
-    // } );
-
+    
+    
     // Deleting Quiz operation
     $( document ).on( 'click', 'd', function () {
         var testid = $( this ).attr( 'id' );
@@ -751,10 +751,12 @@ $( document ).ready( function () {
                 if(full_screen_element !== null)
                     {  
                         console.log('Page has entered fullscreen mode');
+                        $("#full-screen").css({'padding-left':'2vw','overflow-y':'scroll'});
 
                     }
                 else
                 {       console.log('Page has exited fullscreen mode');
+                        $("#full-screen").css({'padding-left':'0vw','overflow-y':'hidden'});
                         $("#redirect-to-quiz").show();
                         //alert('go to full screen in 10 seconds');
                         toastr.error('Go to Full-Screen ASAP');

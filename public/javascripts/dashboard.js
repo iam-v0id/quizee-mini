@@ -1,6 +1,6 @@
 import userObject from './ls.js';
-var isFullscreen=false;
-var elem='';
+var isFullscreen = false;
+var elem = '';
 
 $( document ).ready( function () {
     $( '#Logoutbtn' ).click( function () {
@@ -12,14 +12,14 @@ $( document ).ready( function () {
         } );
         location.href = "/";
     } );
-    $("#app").hide();//timer id hiding
+    $( "#app" ).hide();//timer id hiding
 
     var createquiz = false
     var cnt = 1
     var quizlength = 0
     var quiz_Code = ''
-    
-    
+
+
     // Author Tab
 
     $( '#createquiz' ).click( function () {
@@ -134,17 +134,16 @@ $( document ).ready( function () {
 
     // Participate Tab
 
-                    $( '#participatequiz' ).click( function ()
-                    {
-                      $("#q-name").hide();
-                      $("#participatequiz").hide();
-                      $("#inst-block").show();
-                    });
-
-     $("#start-quiz").click(function(){
-        $("#inst-block").hide();
+    $( '#participatequiz' ).click( function () {
         $( "#q-name" ).hide();
-        
+        $( "#participatequiz" ).hide();
+        $( "#inst-block" ).show();
+    } );
+
+    $( "#start-quiz" ).click( function () {
+        $( "#inst-block" ).hide();
+        $( "#q-name" ).hide();
+
         var quizCode = $( "#quizid" ).val();
         //console.log(quizCode);  
         //$("#quizsubmitform").html('');
@@ -157,9 +156,9 @@ $( document ).ready( function () {
                     console.log( data.quiz );
                     console.log( data.quiz.quizName );
                     //console.log(data.quiz.questions.length);
-                    $("#app").show();
-                    var duration=data.quiz.quizDuration;
-                    timer(duration);
+                    $( "#app" ).show();
+                    var duration = data.quiz.quizDuration;
+                    timer( duration );
                     quizlength = data.quiz.questions.length;
                     quiz_Code = data.quiz._id;
                     $( "#quiztitle" ).html( data.quiz.quizName );
@@ -203,13 +202,13 @@ $( document ).ready( function () {
 
                         document.getElementById( 'quizsubmitform' ).appendChild( quizques );
                     }
-                //full screen functionality
+                    //full screen functionality
                     $( "#quizsubmitform" ).show();
                     $( "#submitquizbutton" ).show();
                     $( "#participatequiz" ).hide();
-                    elem=document.getElementById("full-screen");    
-                    openFullscreen(elem);
-                    $("#full-screen").show();
+                    elem = document.getElementById( "full-screen" );
+                    openFullscreen( elem );
+                    $( "#full-screen" ).show();
 
                 }
                 else
@@ -222,7 +221,7 @@ $( document ).ready( function () {
 
     $( "#submitquizbutton" ).click( function () {
         //$("#participatequiz").hide();
-        $("#app").hide();
+        $( "#app" ).hide();
         var responses = [];
         //console.log(quizlength);
         for ( var y = 1; y <= quizlength; y++ ) {
@@ -244,7 +243,7 @@ $( document ).ready( function () {
                     console.log( data.marks );
                     toastr.success( "Quiz Submitted Sucessfully " );
                     exitFullscreen();
-                    isFullscreen=false;
+                    isFullscreen = false;
                     $( "#marks" ).html( data.marks );
                     $( "#marks_declaration" ).show();
                     $( "#marksokbutton" ).show();
@@ -279,15 +278,15 @@ $( document ).ready( function () {
         $( "#marks" ).html( '' );
         $( "#marksokbutton" ).hide();
         $( "#marks_declaration" ).hide();
-       
+
 
     } );
 
     //Leader Board Tab
 
 
-    var leaderboard_functionality= function () {
-        
+    var leaderboard_functionality = function () {
+
         var quizzesParticipatedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -299,7 +298,7 @@ $( document ).ready( function () {
 
                     console.log( "quizzes received" );
                     console.log( qarray );
-                    for ( var qz = qarray.length-1; qz >=0 ; qz-- ) {
+                    for ( var qz = qarray.length - 1; qz >= 0; qz-- ) {
                         var qid = qz + 1;
                         //console.log()
                         var quizofuser = document.createElement( 'div' );
@@ -319,9 +318,9 @@ $( document ).ready( function () {
                                   </div>`
                         document.getElementById( 'quizparticipatedlist' ).appendChild( quizofuser );
                     }
-                    $("#quizheading").show();
-                    $("#quizparticipatedlist").show();
-                    
+                    $( "#quizheading" ).show();
+                    $( "#quizparticipatedlist" ).show();
+
                 }
                 else {
                     toastr.error( data.error );
@@ -330,45 +329,45 @@ $( document ).ready( function () {
 
         } );
 
-    } ;
+    };
 
     //clicking ok after viewing leader board            
 
     $( "#lb-okbutton" ).click( function () {
-        $("#leaderboard-block").hide();
+        $( "#leaderboard-block" ).hide();
         $( "#quizheading" ).show();
         $( "#quizparticipatedlist" ).show();
     } );
 
     //on shifting to other tabs
     $( "#home-tab" ).click( function () {
-        $("#leaderboard").hide();
-        $("#profile").hide();
+        $( "#leaderboard" ).hide();
+        $( "#profile" ).hide();
     } );
     $( "#profile-tab" ).click( function () {
-        $("#leaderboard").hide();
-        $("#profile").show();
+        $( "#leaderboard" ).hide();
+        $( "#profile" ).show();
     } );
     $( "#leaderboard-tab" ).click( function () {
-        $("#leaderboard-block").hide();
-        $("#leaderboard").show();
-        $("#quizparticipatedlist").html('');
+        $( "#leaderboard-block" ).hide();
+        $( "#leaderboard" ).show();
+        $( "#quizparticipatedlist" ).html( '' );
         leaderboard_functionality();
-        $("#profile").hide();
-    });
+        $( "#profile" ).hide();
+    } );
     //on clicking my quizzes tab
-    $("#myquizzes-tab").click(function(){
+    $( "#myquizzes-tab" ).click( function () {
         myquizzesdisplay();
-        $("#leaderboard").hide();
+        $( "#leaderboard" ).hide();
         $( "#lb-table-body" ).html( '' );
-        $("#profile").hide();
-                        
-    });
+        $( "#profile" ).hide();
+
+    } );
 
     //my quizzes  tab designing
 
-    var myquizzesdisplay=function(){
-        $("#myquizzes-list").html('');
+    var myquizzesdisplay = function () {
+        $( "#myquizzes-list" ).html( '' );
         var quizzesconductedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -381,7 +380,7 @@ $( document ).ready( function () {
 
                     console.log( "quizzes received" );
                     console.log( q_conductedarray );
-                    for ( var qz = q_conductedarray.length-1; qz >=0 ; qz-- ) {
+                    for ( var qz = q_conductedarray.length - 1; qz >= 0; qz-- ) {
                         var qid = qz + 1;
                         //console.log()
                         var quizconducted = document.createElement( 'div' );
@@ -420,9 +419,9 @@ $( document ).ready( function () {
 
 
     }
-    
-    
-    
+
+
+
     // Deleting Quiz operation
     $( document ).on( 'click', 'd', function () {
         var testid = $( this ).attr( 'id' );
@@ -430,7 +429,7 @@ $( document ).ready( function () {
         $( `#${testid}` ).hide();
         var edit_block = $( this ).next().attr( 'id' );
         console.log( edit_block );
-        
+
         $( `#${edit_block}` ).show();
 
     } );
@@ -603,14 +602,13 @@ $( document ).ready( function () {
         quescnt--;
     } );
 
-    $( '#upd-clearquiz' ).click( function ()
-        {
-    
-            $("#update-forminner").html('');
-            $("#update-quizform").hide();
-            $("#myquizzes-list").html('');
-            myquizzesdisplay();
-        } );
+    $( '#upd-clearquiz' ).click( function () {
+
+        $( "#update-forminner" ).html( '' );
+        $( "#update-quizform" ).hide();
+        $( "#myquizzes-list" ).html( '' );
+        myquizzesdisplay();
+    } );
 
     $( "#upd-submitquestion" ).click( function () {
         var quizName = $( "#upd-qname" ).val();
@@ -717,121 +715,104 @@ $( document ).ready( function () {
         document.execCommand( "copy" );
         $temp.remove();
     } );
-   
-    // $(document).on('keypress',function(e){
-    //     console.log("not allowing other keys");
-    //     console.log(isFullscreen);
-    //     console.log(e.key);
-    //     if(e.key === "Escape") {
-    //             if(isFullscreen){
-    //                 console.log("not allowing other keys in if condition");
-    //                 openFullscreen(elem);
-    //             }
-    //                              }
-    // });
 
-    // // $(document).on('keydown', function(event) {
-    // //       if (event.key == "Escape") {
-    // //           alert('Esc key pressed.');
-    // //       }
-    // //   });
 
-    async function wait( ms )
-        {
-        return new Promise( resolve =>
-        {   
+    async function wait( ms ) {
+        return new Promise( resolve => {
             setTimeout( resolve, ms );
         } );
+    }
+
+    document.addEventListener( 'fullscreenchange', async () => {
+        var full_screen_element = document.fullscreenElement;
+
+        if ( full_screen_element !== null ) {
+            console.log( 'Page has entered fullscreen mode' );
+            $( "#full-screen" ).css( {'padding-left': '2vw', 'overflow-y': 'scroll'} );
+
         }
+        else {
+            console.log( 'Page has exited fullscreen mode' );
+            $( "#full-screen" ).css( {'padding-left': '0vw', 'overflow-y': 'hidden'} );
+            $( "#redirect-to-quiz" ).show();
+            toastr.error( 'Go to Full-Screen ASAP' );
+            isFullscreen = false;
+            //await wait(10000);
+            for ( let i = 0; i < 40; i++ ) {
+                await wait( 250 );
+                if ( isFullscreen )
+                    break;
+            }
+            console.log( '10 sec done' );
+            if ( !isFullscreen ) {
+                $( '#submitquizbutton' ).trigger( 'click' );
+                $( "#redirect-to-quiz" ).hide();
+            }
+        }
+    } );
 
-      document.addEventListener('fullscreenchange', async() =>
-            {
-                var full_screen_element = document.fullscreenElement;
-            
-                if(full_screen_element !== null)
-                    {  
-                        console.log('Page has entered fullscreen mode');
-                        $("#full-screen").css({'padding-left':'2vw','overflow-y':'scroll'});
+    $( "#redirect-to-quiz" ).click( function () {
 
-                    }
-                else
-                {       console.log('Page has exited fullscreen mode');
-                        $("#full-screen").css({'padding-left':'0vw','overflow-y':'hidden'});
-                        $("#redirect-to-quiz").show();
-                        //alert('go to full screen in 10 seconds');
-                        toastr.error('Go to Full-Screen ASAP');
-                        isFullscreen=false;
-                        await wait(10000);
-                        console.log('10 sec done');
-                        if (!isFullscreen)
-                       { $('#submitquizbutton').trigger('click');
-                        $("#redirect-to-quiz").hide();
-                       }
-                }   
-            });
+        $( "#redirect-to-quiz" ).hide();
+        openFullscreen( elem );
+    } );
 
-        $("#redirect-to-quiz").click(function(){
-            
-            $("#redirect-to-quiz").hide();    
-            openFullscreen(elem);
-        });
 
-        
 } );
 // full screen functionality
 
-function openFullscreen(elem) {
-                    isFullscreen=true
-                    if (elem.requestFullscreen) {
-                        elem.requestFullscreen();
-                    } else if (elem.webkitRequestFullscreen) { /* Safari */
-                        elem.webkitRequestFullscreen();
-                    } else if (elem.msRequestFullscreen) { /* IE11 */
-                        elem.msRequestFullscreen();
-                    }
-                    else if (elem.mozRequestFullScreen) {
-                        elem.mozRequestFullScreen();
-                    }
-                }
+function openFullscreen( elem ) {
+    isFullscreen = true
+    if ( elem.requestFullscreen ) {
+        elem.requestFullscreen();
+    } else if ( elem.webkitRequestFullscreen ) { /* Safari */
+        elem.webkitRequestFullscreen();
+    } else if ( elem.msRequestFullscreen ) { /* IE11 */
+        elem.msRequestFullscreen();
+    }
+    else if ( elem.mozRequestFullScreen ) {
+        elem.mozRequestFullScreen();
+    }
+}
 function exitFullscreen() {
-                console.log('exit call received');
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE11 */
-                    document.msExitFullscreen();
-                }  else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                }
-           }
+    console.log( 'exit call received' );
+    if ( document.exitFullscreen ) {
+        document.exitFullscreen();
+    } else if ( document.webkitExitFullscreen ) { /* Safari */
+        document.webkitExitFullscreen();
+    } else if ( document.msExitFullscreen ) { /* IE11 */
+        document.msExitFullscreen();
+    } else if ( document.mozCancelFullScreen ) {
+        document.mozCancelFullScreen();
+    }
+}
 //timer code 
-var timer = function(duration){
-    const TIME_LIMIT = 60*duration; // Give time here
+var timer = function ( duration ) {
+    const TIME_LIMIT = 60 * duration; // Give time here
     const FULL_DASH_ARRAY = 283;
-    const WARNING_THRESHOLD = 0.40*TIME_LIMIT;
-    const ALERT_THRESHOLD = 0.15*TIME_LIMIT;
-    
+    const WARNING_THRESHOLD = 0.40 * TIME_LIMIT;
+    const ALERT_THRESHOLD = 0.15 * TIME_LIMIT;
+
     const COLOR_CODES = {
-      info: {
-        color: "green"
-      },
-      warning: {
-        color: "orange",
-        threshold: WARNING_THRESHOLD
-      },
-      alert: {
-        color: "red",
-        threshold: ALERT_THRESHOLD
-      }
+        info: {
+            color: "green"
+        },
+        warning: {
+            color: "orange",
+            threshold: WARNING_THRESHOLD
+        },
+        alert: {
+            color: "red",
+            threshold: ALERT_THRESHOLD
+        }
     };
-    
+
     let timePassed = 0;
     let timeLeft = TIME_LIMIT;
     let timerInterval = null;
     let remainingPathColor = COLOR_CODES.info.color;
-    
-    document.getElementById("app").innerHTML = `
+
+    document.getElementById( "app" ).innerHTML = `
     <div class="base-timer">
       <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <g class="base-timer__circle">
@@ -851,78 +832,78 @@ var timer = function(duration){
       </svg>
       <span id="base-timer-label" class="base-timer__label">${formatTime(
         timeLeft
-      )}</span>
+    )}</span>
     </div>
     `;
-    
+
     startTimer();
-    
+
     function onTimesUp() {
-      clearInterval(timerInterval);
-      console.log("time up");
-      
-      
+        clearInterval( timerInterval );
+        console.log( "time up" );
+
+
     }
-    
+
     function startTimer() {
-      timerInterval = setInterval(() => {
-        timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
-        document.getElementById("base-timer-label").innerHTML = formatTime(
-          timeLeft
-        );
-        setCircleDasharray();
-        setRemainingPathColor(timeLeft);
-    
-        if (timeLeft === 0) {
-          onTimesUp();
-          $('#submitquizbutton').trigger('click');
-          //$("#app").hide();
+        timerInterval = setInterval( () => {
+            timePassed = timePassed += 1;
+            timeLeft = TIME_LIMIT - timePassed;
+            document.getElementById( "base-timer-label" ).innerHTML = formatTime(
+                timeLeft
+            );
+            setCircleDasharray();
+            setRemainingPathColor( timeLeft );
+
+            if ( timeLeft === 0 ) {
+                onTimesUp();
+                $( '#submitquizbutton' ).trigger( 'click' );
+                //$("#app").hide();
+            }
+        }, 1000 );
+    }
+
+    function formatTime( time ) {
+        const minutes = Math.floor( time / 60 );
+        let seconds = time % 60;
+
+        if ( seconds < 10 ) {
+            seconds = `0${seconds}`;
         }
-      }, 1000);
+
+        return `${minutes}:${seconds}`;
     }
-    
-    function formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      let seconds = time % 60;
-    
-      if (seconds < 10) {
-        seconds = `0${seconds}`;
-      }
-    
-      return `${minutes}:${seconds}`;
+
+    function setRemainingPathColor( timeLeft ) {
+        const {alert, warning, info} = COLOR_CODES;
+        if ( timeLeft <= alert.threshold ) {
+            document
+                .getElementById( "base-timer-path-remaining" )
+                .classList.remove( warning.color );
+            document
+                .getElementById( "base-timer-path-remaining" )
+                .classList.add( alert.color );
+        } else if ( timeLeft <= warning.threshold ) {
+            document
+                .getElementById( "base-timer-path-remaining" )
+                .classList.remove( info.color );
+            document
+                .getElementById( "base-timer-path-remaining" )
+                .classList.add( warning.color );
+        }
     }
-    
-    function setRemainingPathColor(timeLeft) {
-      const { alert, warning, info } = COLOR_CODES;
-      if (timeLeft <= alert.threshold) {
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.remove(warning.color);
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.add(alert.color);
-      } else if (timeLeft <= warning.threshold) {
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.remove(info.color);
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.add(warning.color);
-      }
-    }
-    
+
     function calculateTimeFraction() {
-      const rawTimeFraction = timeLeft / TIME_LIMIT;
-      return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+        const rawTimeFraction = timeLeft / TIME_LIMIT;
+        return rawTimeFraction - ( 1 / TIME_LIMIT ) * ( 1 - rawTimeFraction );
     }
-    
+
     function setCircleDasharray() {
-      const circleDasharray = `${(
-        calculateTimeFraction() * FULL_DASH_ARRAY
-      ).toFixed(0)} 283`;
-      document
-        .getElementById("base-timer-path-remaining")
-        .setAttribute("stroke-dasharray", circleDasharray);
+        const circleDasharray = `${(
+            calculateTimeFraction() * FULL_DASH_ARRAY
+        ).toFixed( 0 )} 283`;
+        document
+            .getElementById( "base-timer-path-remaining" )
+            .setAttribute( "stroke-dasharray", circleDasharray );
     }
-    }
+}

@@ -81,7 +81,11 @@ module.exports =
         var marks = 0;
 
         try {
-            let collection = await Quiz.findById( req.body.quizCode, {questions: {correctAnswer: 1}} );
+            let collection = await Quiz.findById( req.body.quizCode, {questions: {correctAnswer: 1}, usersParticipated: 1, author: 1} );
+            if ( collection.author == req.session.user.userId )
+                return res.json( {success: false, error: "You cannot participate in your own quiz"} );
+            if ( collection.usersParticipated.includes( req.body.userId ) )
+                return res.json( {success: false, error: "Quiz Already Submitted"} );
             for ( let i = 0; i < req.body.responses.length; i++ ) {
                 if ( req.body.responses[i] == 0 )
                     continue;

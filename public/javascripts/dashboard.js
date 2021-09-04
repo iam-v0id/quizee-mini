@@ -1,6 +1,5 @@
 import userObject from './ls.js';
-var isFullscreen=false;
-var elem='';
+
 
 $( document ).ready( function () {
     $( '#Logoutbtn' ).click( function () {
@@ -18,7 +17,8 @@ $( document ).ready( function () {
     var cnt = 1
     var quizlength = 0
     var quiz_Code = ''
-    
+    var isFullscreen=false;
+    var elem='';
     
     // Author Tab
 
@@ -223,6 +223,10 @@ $( document ).ready( function () {
     $( "#submitquizbutton" ).click( function () {
         //$("#participatequiz").hide();
         $("#app").hide();
+        if (!isFullscreen)
+                {exitFullscreen();}
+        else
+        {exitFullscreenbysubmit();}
         var responses = [];
         //console.log(quizlength);
         for ( var y = 1; y <= quizlength; y++ ) {
@@ -243,7 +247,7 @@ $( document ).ready( function () {
                 if ( data.success ) {
                     console.log( data.marks );
                     toastr.success( "Quiz Submitted Sucessfully " );
-                    exitFullscreen();
+                    //exitFullscreen();
                     isFullscreen=false;
                     $( "#marks" ).html( data.marks );
                     $( "#marks_declaration" ).show();
@@ -757,16 +761,18 @@ $( document ).ready( function () {
                 else
                 {       console.log('Page has exited fullscreen mode');
                         $("#full-screen").css({'padding-left':'0vw','overflow-y':'hidden'});
-                        $("#redirect-to-quiz").show();
-                        //alert('go to full screen in 10 seconds');
-                        toastr.error('Go to Full-Screen ASAP');
-                        isFullscreen=false;
-                        await wait(10000);
-                        console.log('10 sec done');
-                        if (!isFullscreen)
-                       { $('#submitquizbutton').trigger('click');
-                        $("#redirect-to-quiz").hide();
-                       }
+                        if (!fullsc_exitbysubmit)
+                        {           $("#redirect-to-quiz").show();
+                                    //alert('go to full screen in 10 seconds');
+                                    toastr.error('Go to Full-Screen ASAP');
+                                    isFullscreen=false;
+                                    await wait(12000);
+                                    console.log('10 sec done');
+                                    if (!isFullscreen)
+                                        { $('#submitquizbutton').trigger('click');
+                                            $("#redirect-to-quiz").hide();
+                                        }
+                         }
                 }   
             });
 
@@ -777,7 +783,7 @@ $( document ).ready( function () {
         });
 
         
-} );
+
 // full screen functionality
 
 function openFullscreen(elem) {
@@ -805,6 +811,22 @@ function exitFullscreen() {
                     document.mozCancelFullScreen();
                 }
            }
+var fullsc_exitbysubmit=false;
+function exitFullscreenbysubmit() {
+            fullsc_exitbysubmit=true;
+            console.log('exit call received by submit received');
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }  else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+}
+
+} );
 //timer code 
 var timer = function(duration){
     const TIME_LIMIT = 60*duration; // Give time here

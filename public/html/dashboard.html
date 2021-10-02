@@ -90,6 +90,7 @@
             <button type="button" class="btn btn-danger" id="deletequestion">Remove Question</button>&nbsp;
             <button type="button" class="btn btn-danger" id="clearquiz">Clear Quiz</button>&nbsp;
             <button type="button" class="btn btn-primary" id="submitquestion">Submit</button>
+            <button type="button" class="btn btn-info" id="stop-creating">Back</button>
           </div>
         </form>
       </div>
@@ -103,7 +104,7 @@
               placeholder="Enter Quiz Code">&nbsp;
             <button id="participatequiz" type="button" class="btn btn-success">Participate</button>
           </div>
-        </div><br>
+        </div>
         <!-- full screen code -->
         <div class="full-screen-scroll" id="full-screen">
           <div id="timer">
@@ -111,16 +112,16 @@
           </div>
           <div>
             <h2 id="quiztitle"></h2>
-          </div><br>
-          <div id="quizsubmitform" style="display: none;"> </div><br>
+          </div>
+          <div id="quizsubmitform" style="display: none;"> </div>
           <button type="button" class="btn btn-primary" id="submitquizbutton"
             style="display: none;margin-left: 8%;">Submit</button>
 
-        </div> <br><br>
+        </div> 
         <div id="inst-block" style="display: none;padding-left: 5vw;">
           <p>Do not press any other key while attempting the quiz</p>
           <p>If you come out of full screen your <b>Quiz</b> will be submitted within <b>10 seconds</b> </p><br>
-          <button id="start-quiz" type="button" class="btn btn-info">Start</button><br><br>
+          <button id="start-quiz" type="button" class="btn btn-info">Start</button>
         </div>
         <button id="redirect-to-quiz" type="button" class="btn btn-danger" style="display: none;">
           Go to Fullscreen</button>
@@ -132,7 +133,7 @@
           </span>
         </div>
         <div>
-          <br><button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
+          <button type="button" class="btn btn-primary" id="marksokbutton" style="display: none;">Ok</button>
         </div>
       </div>
       <!-- Leaderboard Tab -->
@@ -156,7 +157,7 @@
             <tbody id="lb-table-body">
 
             </tbody>
-          </table><br><br>
+          </table>
           <button type="button" class="btn btn-primary" id="lb-okbutton">Back</button>
         </div>
 
@@ -172,7 +173,8 @@
 
         </div>
 
-        <form id="update-quizform" style="display: none; background-color: lightblue;">
+        <form id="update-quizform" style="padding-left: 3vw; padding-right: 3vw; background-color: aliceblue ;display: none;"
+        class="shadow rounded"> 
           <div id="update-forminner">
           </div><br>
           <div id="upd-terminals" class="d-flex justify-content-between" style="padding-bottom:3vw;display: none;">

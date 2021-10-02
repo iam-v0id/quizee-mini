@@ -213,15 +213,31 @@ $( document ).ready( function () {
                 }
                 else
                     toastr.error( data.error );
+                    $( "#q-name" ).show();
+                    $( "#participatequiz" ).show();
+                    $( "#inst-block" ).hide();
+
             }
         } )
 
 
     } );
+    $("#stop-creating").click(function(){
+        $("#createquiz").show();
+        $("#created").hide();
+        $("#quizid-okbutton").hide();
+        $("#quizform").hide();
+    });
 
     $( "#submitquizbutton" ).click( function () {
         //$("#participatequiz").hide();
-        $( "#app" ).hide();
+        //$( "#app" ).hide();
+        
+        if (!isFullscreen)
+                {exitFullscreen();}
+        else
+        {   exitFullscreenbysubmit();
+            $("#full-screen").hide();}
         var responses = [];
         //console.log(quizlength);
         for ( var y = 1; y <= quizlength; y++ ) {
@@ -339,6 +355,7 @@ $( document ).ready( function () {
         $( "#quizparticipatedlist" ).show();
     } );
 
+
     //on shifting to other tabs
     $( "#home-tab" ).click( function () {
         $( "#leaderboard" ).hide();
@@ -368,6 +385,7 @@ $( document ).ready( function () {
 
     var myquizzesdisplay = function () {
         $( "#myquizzes-list" ).html( '' );
+        $("#myquiz-heading").show();
         var quizzesconductedId = userObject.getCurrentUserId();
 
         $.ajax( {
@@ -686,6 +704,7 @@ $( document ).ready( function () {
                             }
                             else {
                                 toastr.error( data.error );
+
                             }
                         }
 
@@ -734,20 +753,19 @@ $( document ).ready( function () {
         else {
             console.log( 'Page has exited fullscreen mode' );
             $( "#full-screen" ).css( {'padding-left': '0vw', 'overflow-y': 'hidden'} );
-            $( "#redirect-to-quiz" ).show();
-            toastr.error( 'Go to Full-Screen ASAP' );
-            isFullscreen = false;
-            //await wait(10000);
-            for ( let i = 0; i < 40; i++ ) {
-                await wait( 250 );
-                if ( isFullscreen )
-                    break;
-            }
-            console.log( '10 sec done' );
-            if ( !isFullscreen ) {
-                $( '#submitquizbutton' ).trigger( 'click' );
-                $( "#redirect-to-quiz" ).hide();
-            }
+            if (!fullsc_exitbysubmit)
+                        {           $("#redirect-to-quiz").show();
+                                    //alert('go to full screen in 10 seconds');
+                                    toastr.error('Go to Full-Screen ASAP');
+                                    isFullscreen=false;
+                                    await wait(12000);
+                                    console.log('10 sec done');
+                                    if (!isFullscreen)
+                                        { $('#submitquizbutton').trigger('click');
+                                            $("#redirect-to-quiz").hide();
+                                        }
+                         }
+            
         }
     } );
 
@@ -785,6 +803,20 @@ function exitFullscreen() {
     } else if ( document.mozCancelFullScreen ) {
         document.mozCancelFullScreen();
     }
+}
+var fullsc_exitbysubmit=false;
+function exitFullscreenbysubmit() {
+            fullsc_exitbysubmit=true;
+            console.log('exit call received by submit received');
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }  else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
 }
 //timer code 
 var timer = function ( duration ) {
